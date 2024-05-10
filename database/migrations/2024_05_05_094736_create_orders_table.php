@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
 
             $table->integer('quantity');
-            $table->string('notes', 255);
+            $table->string('notes', 255)->nullable();
 
             $table->timestamps();
         });
