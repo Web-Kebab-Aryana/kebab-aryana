@@ -4,6 +4,14 @@ import { PageProps } from "@/types";
 import Sidebar from "@/Components/Sidebar";
 import { Stack, Text } from "@chakra-ui/react";
 
+const DesktopContent = () => {
+    return <Text>Desktop Specific Content</Text>;
+};
+
+const MobileContent = () => {
+    return <Text>Mobile Specific Content</Text>;
+};
+
 export default function Dashboard({ auth }: PageProps) {
     return (
         // <AuthenticatedLayout
@@ -21,7 +29,10 @@ export default function Dashboard({ auth }: PageProps) {
         //     </div>
         // </AuthenticatedLayout>
         <Stack bgColor={"#FFF7E4"} h={"100vh"} w={"100vw"} direction={"row"}>
-            <Sidebar />
+            <Sidebar
+                desktopProps={{ contentComponent: <DesktopContent /> }}
+                mobileProps={{ contentComponent: <MobileContent /> }}
+            />
         </Stack>
     );
 }

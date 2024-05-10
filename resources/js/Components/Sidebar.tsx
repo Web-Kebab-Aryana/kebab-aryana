@@ -19,36 +19,41 @@ import { MdOutlineHistory, MdEditSquare } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { usePage, Link } from "@inertiajs/react";
 
-const DesktopLayout = () => {
-    // const currentPath = route().current();
+interface ISpecialButton {
+    label: string;
+    path: string;
+    icon: React.ReactNode;
+}
+
+const specialButtons: ISpecialButton[] = [
+    {
+        label: "Dashboard",
+        path: "/dashboard",
+        icon: <BiSolidDashboard size={"1.5rem"} />,
+    },
+    {
+        label: "Order",
+        path: "/order",
+        icon: <FaListUl size={"1.5rem"} />,
+    },
+    {
+        label: "History",
+        path: "/history",
+        icon: <MdOutlineHistory size={"1.5rem"} />,
+    },
+    {
+        label: "Edit Page",
+        path: "/edit",
+        icon: <MdEditSquare size={"1.5rem"} />,
+    },
+];
+
+interface DesktopLayoutProps {
+    contentComponent: React.ReactNode;
+}
+
+const DesktopLayout: React.FC<DesktopLayoutProps> = ({ contentComponent }) => {
     const { url } = usePage();
-
-    const specialButtons = [
-        {
-            label: "Dashboard",
-            path: "/dashboard",
-            icon: <BiSolidDashboard size={"1.5rem"} />,
-        },
-        {
-            label: "Order",
-            path: "/order",
-            icon: <FaListUl size={"1.5rem"} />,
-        },
-        {
-            label: "History",
-            path: "/history",
-            icon: <MdOutlineHistory size={"1.5rem"} />,
-        },
-        {
-            label: "Edit Page",
-            path: "/edit",
-            icon: <MdEditSquare size={"1.5rem"} />,
-        },
-    ];
-
-    // const stateImageSize = {
-    //     w: ["1rem", "1rem", "1.25rem", "1.75rem"],
-    // };
 
     const buttonResponsiveProps = {
         p: [3, 3, 3, 5],
@@ -196,35 +201,20 @@ const DesktopLayout = () => {
                     </Link>
                 </Stack>
             </Stack>
+            {/* Contents */}
+            <Stack p={50} gap={"1rem"} flex={1} overflow={"hidden"}>
+                {contentComponent}
+            </Stack>
         </Stack>
     );
 };
 
-const MobileLayout = () => {
-    const { url } = usePage();
+interface MobileLayoutProps {
+    contentComponent: React.ReactNode;
+}
 
-    const specialButtons = [
-        {
-            label: "Dashboard",
-            path: "/dashboard",
-            icon: <BiSolidDashboard size={"1.5rem"} />,
-        },
-        {
-            label: "Order",
-            path: "/order",
-            icon: <FaListUl size={"1.5rem"} />,
-        },
-        {
-            label: "History",
-            path: "/history",
-            icon: <MdOutlineHistory size={"1.5rem"} />,
-        },
-        {
-            label: "Edit Page",
-            path: "/edit",
-            icon: <MdEditSquare size={"1.5rem"} />,
-        },
-    ];
+const MobileLayout: React.FC<MobileLayoutProps> = ({ contentComponent }) => {
+    const { url } = usePage();
 
     const buttonResponsiveProps = {
         p: [3, 3, 3, 5],
@@ -360,7 +350,7 @@ const MobileLayout = () => {
             {/* Content */}
             <Stack minH={"100vh"} minW={"100vw"} gap={0} pb={"4rem"}>
                 <Stack p={25} pt={75} gap={"1rem"} flex={1}>
-                    Ini mobile layout
+                    {contentComponent}
                 </Stack>
             </Stack>
             {/* Bottom Bar */}
@@ -437,18 +427,30 @@ const MobileLayout = () => {
     );
 };
 
-const Sidebar = () => {
+const DummyComponent = () => {
+    return (
+        <Stack>
+            <Text>Ini Dummy Component</Text>
+        </Stack>
+    );
+};
+
+interface SidebarProps {
+    desktopProps: DesktopLayoutProps;
+    mobileProps: MobileLayoutProps;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ desktopProps, mobileProps }) => {
     return (
         <>
             <Show above="md">
                 <Stack direction={"row"}>
-                    <DesktopLayout />
-                    <Text>Halo Ini Desktop Layout</Text>
+                    <DesktopLayout {...desktopProps} />
                 </Stack>
             </Show>
             <Hide above="md">
                 <Stack direction={"row"}>
-                    <MobileLayout />
+                    <MobileLayout {...mobileProps} />
                 </Stack>
             </Hide>
         </>
