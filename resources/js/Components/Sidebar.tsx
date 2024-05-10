@@ -159,7 +159,7 @@ const MobileLayout = () => {
             <Image
                 objectFit="cover"
                 src="/images/logoArayana.svg"
-                alt="Dan Abramov"
+                alt="Logo Aryana"
             />
         </div>
     );
