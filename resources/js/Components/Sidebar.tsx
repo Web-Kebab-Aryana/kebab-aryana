@@ -65,6 +65,8 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ contentComponent }) => {
     return (
         <Stack
             flex={1}
+            h={"100vh"}
+            w={"100vw"}
             gap={0}
             direction={"row"}
             overflowX={"hidden"}
@@ -203,6 +205,117 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ contentComponent }) => {
             </Stack>
             {/* Contents */}
             <Stack p={50} gap={"1rem"} flex={1} overflow={"hidden"}>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    w={"full"}
+                >
+                    <Heading>
+                        {url === "/dashboard"
+                            ? "Dashboard"
+                            : url === "/order"
+                            ? "Order"
+                            : url === "/history"
+                            ? "History"
+                            : url === "/edit"
+                            ? "Edit Page"
+                            : "Unknown Page"}
+                    </Heading>
+                    <Menu>
+                        <MenuButton>
+                            <Button
+                                variant={"ghost"}
+                                w={"full"}
+                                justifyContent={"start"}
+                                p={[0, 0, 0, 2]}
+                                cursor={"default"}
+                                _hover={{
+                                    pointerEvents: "none",
+                                    draggable: "none",
+                                }}
+                            >
+                                <Avatar
+                                    w={["2rem", "2rem", "2rem", "3rem"]}
+                                    mr={"0.5rem"}
+                                    h={"auto"}
+                                >
+                                    <AvatarBadge
+                                        boxSize="1.25rem"
+                                        bg="green.500"
+                                    />
+                                </Avatar>
+                                <Stack
+                                    justifyContent={"center"}
+                                    alignItems={"start"}
+                                    ml={"0.5rem"}
+                                    gap={0}
+                                    overflow={"hidden"}
+                                >
+                                    <Text
+                                        fontSize={
+                                            buttonResponsiveProps.fontSize
+                                        }
+                                        fontWeight={"semibold"}
+                                        color={"#352919"}
+                                        noOfLines={1}
+                                        isTruncated={true}
+                                        textOverflow={"ellipsis"}
+                                    >
+                                        Muhammad
+                                    </Text>
+                                    <Text
+                                        fontSize={[
+                                            "0.5rem",
+                                            "0.5rem",
+                                            "0.5rem",
+                                            "0.75rem",
+                                        ]}
+                                        color={"#9C5E08"}
+                                    >
+                                        CEO & Head Chef
+                                    </Text>
+                                </Stack>
+                            </Button>
+                        </MenuButton>
+                        <MenuList px={2} shadow={"lg"} borderRadius={"xl"}>
+                            <Stack w={"full"}>
+                                <Link
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                    type="button"
+                                >
+                                    <Button
+                                        type="button"
+                                        bg={"#AB2937"}
+                                        p={2}
+                                        py={0}
+                                        fontSize={[
+                                            "0.8rem",
+                                            "0.8rem",
+                                            "0.85rem",
+                                            "1rem",
+                                        ]}
+                                        borderRadius={"xl"}
+                                        color={"white"}
+                                        fontWeight={"bold"}
+                                        gap={2}
+                                        w={"full"}
+                                        justifyContent={"center"}
+                                    >
+                                        <TbLogout2
+                                            color="white"
+                                            fontSize={"1.25rem"}
+                                            fontWeight={"bold"}
+                                        />
+                                        Log Out
+                                    </Button>
+                                </Link>
+                            </Stack>
+                        </MenuList>
+                    </Menu>
+                </Stack>
+
                 {contentComponent}
             </Stack>
         </Stack>
