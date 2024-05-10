@@ -203,6 +203,36 @@ const DesktopLayout = () => {
 const MobileLayout = () => {
     const { url } = usePage();
 
+    const specialButtons = [
+        {
+            label: "Dashboard",
+            path: "/dashboard",
+            icon: <BiSolidDashboard size={"1.5rem"} />,
+        },
+        {
+            label: "Order",
+            path: "/order",
+            icon: <FaListUl size={"1.5rem"} />,
+        },
+        {
+            label: "History",
+            path: "/history",
+            icon: <MdOutlineHistory size={"1.5rem"} />,
+        },
+        {
+            label: "Edit Page",
+            path: "/edit",
+            icon: <MdEditSquare size={"1.5rem"} />,
+        },
+    ];
+
+    const buttonResponsiveProps = {
+        p: [3, 3, 3, 5],
+        p2: [4, 4, 6, 6],
+        fontSize: ["0.75rem", "0.75rem", "0.85rem", "1rem"],
+        imageSize: ["0.75rem", "0.75rem", "0.85rem", "1rem"],
+    };
+
     const currentPageName =
         url === "/dashboard"
             ? "Dashboard"
@@ -327,7 +357,82 @@ const MobileLayout = () => {
                     </MenuList>
                 </Menu>
             </Stack>
-            Ini mobile layout
+            {/* Content */}
+            <Stack minH={"100vh"} minW={"100vw"} gap={0} pb={"4rem"}>
+                <Stack p={25} pt={75} gap={"1rem"} flex={1}>
+                    Ini mobile layout
+                </Stack>
+            </Stack>
+            {/* Bottom Bar */}
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent={"space-between"}
+                p={3}
+                px={4}
+                bg="white"
+                boxShadow="md"
+                zIndex={10}
+                position="fixed"
+                bottom={0}
+                width="full"
+                shadow={"bottomOutline"}
+            >
+                {specialButtons.map((button, index) => (
+                    <Stack direction={"row"}>
+                        <Link
+                            href={button.path}
+                            key={index}
+                            as="button"
+                            type="button"
+                        >
+                            <Button
+                                type="button"
+                                variant={"ghost"}
+                                w={"full"}
+                                justifyContent={"start"}
+                                _hover={{
+                                    transform: "scale(1.05)",
+                                    color: "#352919",
+                                    "> img": {
+                                        opacity: 1,
+                                        transition: "opacity 0.2s ease-in-out",
+                                    },
+                                }}
+                                transition={"transform 0.2s ease-in-out"}
+                                color={"#35291950"}
+                                flexDirection={"column"}
+                                gap={1}
+                            >
+                                <Stack
+                                    color={
+                                        url === button.path
+                                            ? "#352919"
+                                            : "#35291950"
+                                    }
+                                >
+                                    {button.icon}
+                                </Stack>
+                                <Text
+                                    fontSize={buttonResponsiveProps.fontSize}
+                                    fontWeight={
+                                        url === button.path
+                                            ? "semibold"
+                                            : "medium"
+                                    }
+                                    color={
+                                        url === button.path
+                                            ? "#352919"
+                                            : "#35291950"
+                                    }
+                                >
+                                    {button.label}
+                                </Text>
+                            </Button>
+                        </Link>
+                    </Stack>
+                ))}
+            </Stack>
         </Stack>
     );
 };
@@ -344,7 +449,6 @@ const Sidebar = () => {
             <Hide above="md">
                 <Stack direction={"row"}>
                     <MobileLayout />
-                    <Text>Halo Ini Desktop Layout</Text>
                 </Stack>
             </Hide>
         </>
