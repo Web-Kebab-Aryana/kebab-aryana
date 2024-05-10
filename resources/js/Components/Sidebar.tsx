@@ -70,7 +70,7 @@ const DesktopLayout = () => {
                     <Image
                         objectFit="cover"
                         src="/images/logoArayana.svg"
-                        alt="Dan Abramov"
+                        alt="Kebab Aryana"
                         mb={["0.5rem", "0.5rem", "0.5rem", "1rem"]}
                     />
                     {specialButtons.map((button, index) => (
@@ -82,7 +82,7 @@ const DesktopLayout = () => {
                             p={buttonResponsiveProps.p}
                             _hover={{
                                 transform: "scale(1.05)",
-                                color: "brand.maroon",
+                                color: "#352919",
                                 "> img": {
                                     opacity: 1,
                                     transition: "opacity 0.2s ease-in-out",
@@ -95,7 +95,7 @@ const DesktopLayout = () => {
                             //     ? "button.gray"
                             //     : "transparent"
                             // }
-                            color={"#352919"}
+                            color={"#35291950"}
                         >
                             <Stack
                                 mr={"1rem"}
