@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use App\Models\Order;
 
 class OrderController extends Controller
 {
+
+    // !notes: buat frontend ini contoh buat ambil order dengan id
+    public function view($id)
+    {
+
+        $order = Order::find($id)->with('orderDetails.menu')->first();
+        return $order;
+    }
+
     public function store(Request $request)
     {
         // validation
@@ -24,7 +34,7 @@ class OrderController extends Controller
         ]);
 
         // masukin order detail
-        $order->orderDetail()->createMany($request->menus);
+        $order->orderDetails()->createMany($request->menus);
 
         return response()->json([
             'message' => 'Order created',
