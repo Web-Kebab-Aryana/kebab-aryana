@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import Sidebar from "@/Components/Sidebar";
-import { Stack } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -20,10 +20,8 @@ export default function Dashboard({ auth }: PageProps) {
         //         </div>
         //     </div>
         // </AuthenticatedLayout>
-        <Stack bgColor={"#FFF7E4"} h={"100vh"} w={"100vw"}>
+        <Stack bgColor={"#FFF7E4"} h={"100vh"} w={"100vw"} direction={"row"}>
             <Sidebar />
-            {/* <h1>Dashboard</h1>
-            <p>You're logged in!</p> */}
         </Stack>
     );
 }
