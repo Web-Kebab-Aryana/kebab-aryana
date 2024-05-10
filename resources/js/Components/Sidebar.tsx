@@ -35,6 +35,7 @@ const DesktopLayout = () => {
 
     const buttonResponsiveProps = {
         p: [3, 3, 3, 5],
+        p2: [4, 4, 6, 6],
         fontSize: ["0.75rem", "0.75rem", "0.85rem", "1rem"],
         imageSize: ["0.75rem", "0.75rem", "0.85rem", "1rem"],
     };
@@ -48,14 +49,14 @@ const DesktopLayout = () => {
             overflowY={"hidden"}
         >
             <Stack
-                w={["20rem", "20rem", "15rem", "25rem"]}
+                w={["20rem", "20rem", "15rem", "20rem"]}
                 minH={"100vh"}
                 bg={"white"}
                 p={[5, 5, 8, 10]}
                 alignItems={"center"}
                 justifyContent={"space-between"}
                 shadow={"lg"}
-                pb={[6, 6, 6, 8]}
+                pb={[6, 6, 8, 12]}
                 borderRightRadius={"2.5rem"}
             >
                 {/* <Stack w={"full"}>
@@ -68,10 +69,10 @@ const DesktopLayout = () => {
                     gap={["0.5rem", "0.5rem", "0.5rem", "0.75rem"]}
                 >
                     <Image
-                        objectFit="cover"
+                        w={["5rem", "6rem", "8rem", "10rem"]}
                         src="/images/logoArayana.svg"
                         alt="Kebab Aryana"
-                        mb={["0.5rem", "0.5rem", "0.5rem", "1rem"]}
+                        mb={["0.5rem", "0.75rem", "1rem", "1.5rem"]}
                     />
                     {specialButtons.map((button, index) => (
                         // <Link key={index} to={button.path}>
@@ -97,13 +98,7 @@ const DesktopLayout = () => {
                             // }
                             color={"#35291950"}
                         >
-                            <Stack
-                                mr={"1rem"}
-
-                                // w={buttonResponsiveProps.imageSize}
-                            >
-                                {button.icon}
-                            </Stack>
+                            <Stack mr={"1rem"}>{button.icon}</Stack>
                             <Text
                                 fontSize={buttonResponsiveProps.fontSize}
                                 //   fontWeight={
@@ -120,6 +115,37 @@ const DesktopLayout = () => {
                         </Button>
                         // {/* </Link> */}
                     ))}
+                </Stack>
+                <Stack>
+                    <Button
+                        color={"#AB2937"}
+                        variant={"ghost"}
+                        fontWeight={"bold"}
+                        bgColor={"#FFF7E4"}
+                        w={"full"}
+                        justifyContent={"start"}
+                        borderRadius={"1rem"}
+                        p={buttonResponsiveProps.p2}
+                        px={["5", "5", "10", "12"]}
+                        _hover={{
+                            transform: "scale(1.05)",
+                            "> img": {
+                                opacity: 1,
+                                transition: "opacity 0.2s ease-in-out",
+                            },
+                            bgColor: "button.gray",
+                        }}
+                        transition={"transform 0.2s ease-in-out"}
+                    >
+                        <TbLogout2 size={"1.5rem"} />
+                        <Text
+                            ml={"1rem"}
+                            fontWeight={"bold"}
+                            fontSize={buttonResponsiveProps.fontSize}
+                        >
+                            Log Out
+                        </Text>
+                    </Button>
                 </Stack>
             </Stack>
         </Stack>
