@@ -34,23 +34,30 @@ class MenuController extends Controller
 
     public function update(Request $request, $id)
     {
-        $menu = Menu::findOrFail($id);
+        $menu = Menu::find($id);
         if (!$menu) {
             return response()->json([
                 'message' => 'Menu not found',
             ], 404);
         }
 
+        $request->validate([
+            'category' => 'min:3|max:255',
+            'name' => 'min:3|max:255',
+            'description' => 'min:3|max:1024',
+            'price' => 'int|min:1000|max:1000000000',
+            'image' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
+        ]);
 
-        $menu->category = $request->category;
-        $menu->name = $request->name;
-        $menu->description = $request->description;
-        $menu->price = $request->price;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('menus', 'public');
             $menu->image = $imagePath;
         }
+
+        $menu->update($request->only(['category', 'name', 'description', 'price']));
+
         $menu->save();
+
         return response()->json([
             'message' => 'Menu updated',
             'menu' => $menu,
