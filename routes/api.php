@@ -3,6 +3,7 @@
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionHistoryController;
+use App\Http\Controllers\ContentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +41,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [TransactionHistoryController::class, 'view'])->name('transaction.view');
         Route::get('/{id}', [TransactionHistoryController::class, 'viewById'])->name('transaction.viewById');
         Route::delete('/{id}', [TransactionHistoryController::class, 'destroy'])->name('transaction.destroy');
+    });
+
+
+    Route::prefix('content')->group(function () {
+        Route::put('/', [ContentController::class, 'edit'])->name('content.edit');
     });
 });
