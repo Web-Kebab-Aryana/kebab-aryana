@@ -12,6 +12,11 @@ class TransactionHistoryController extends Controller
     public function view()
     {
         $orders = Order::all();
+        if (!$orders) {
+            return response()->json([
+                'message' => 'Order not found',
+            ], 404);
+        }
 
         $transactions = [];
 
@@ -36,6 +41,11 @@ class TransactionHistoryController extends Controller
     public function viewById($id)
     {
         $order = Order::find($id);
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order not found',
+            ], 404);
+        }
 
         $total = $order->orderDetails->sum(function ($orderDetail) {
             return $orderDetail->menu->price * $orderDetail->quantity;
@@ -51,4 +61,21 @@ class TransactionHistoryController extends Controller
         return $transaction;
 
     }
+
+    public function destroy($id)
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order not found',
+            ], 404);
+        }
+
+        $order->delete();
+
+        return response()->json([
+            'message' => 'Order deleted',
+        ]);
+    } 
 }

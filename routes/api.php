@@ -39,5 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('transaction')->group(function () {
         Route::get('/', [TransactionHistoryController::class, 'view'])->name('transaction.view');
         Route::get('/{id}', [TransactionHistoryController::class, 'viewById'])->name('transaction.viewById');
+        Route::delete('/{id}', [TransactionHistoryController::class, 'destroy'])->name('transaction.destroy');
     });
 });
