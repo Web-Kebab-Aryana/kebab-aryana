@@ -8,7 +8,7 @@ const MenuCard = () => {
             bgColor={"white"}
             borderRadius={"xl"}
             direction={"row"}
-            minW={"450px"}
+            minW={{ sm: "400px", lg: "450px" }}
         >
             <Image
                 // w={["5rem", "6rem", "8rem", "10rem"]}
@@ -35,21 +35,25 @@ const MenuCard = () => {
                         </Heading>
                     </Stack>
                     {/* Name */}
-                    <Heading color={"#352919"} fontSize={"xl"}>
+                    <Heading
+                        color={"#352919"}
+                        fontSize={{ sm: "md", lg: "xl" }}
+                    >
                         Special Sandwich Ayam
                     </Heading>
-                    <Text color={"#35291950"}>
+                    <Text color={"#35291950"} fontSize={{ md: "sm", lg: "md" }}>
                         Lorem ipsum dolor sit amet consectetur adipiscing elit
                         Ut et.
                     </Text>
                 </Stack>
                 {/* Buttons */}
-                <Stack align={"end"} direction={"row"} gap={5}>
+                <Stack align={"end"} direction={"row"} gap={{ md: 3, lg: 5 }}>
                     <Button
                         bgColor={"#D9D9D9"}
                         border={"1px solid #AB2937"}
                         borderRadius={"full"}
-                        w={"7rem"}
+                        // w={"7rem"}
+                        size={{ sm: "sm", lg: "md" }}
                     >
                         <MdDeleteForever color="#AB2937" />
                         <Text color={"#AB2937"} ml={2}>
@@ -57,14 +61,22 @@ const MenuCard = () => {
                         </Text>
                     </Button>
                     <Button
-                        w={"7rem"}
                         bgColor={"#352919"}
                         borderRadius={"full"}
+                        // w={"7rem"}
+                        size={{ sm: "sm", lg: "md" }}
                     >
-                        <BiSolidEdit color={"#FFF7E4"} />
-                        <Text ml={2} color={"#FFF7E4"}>
-                            Edit
-                        </Text>
+                        <Stack
+                            direction={"row"}
+                            align={"center"}
+                            mx={2}
+                            gap={0}
+                        >
+                            <BiSolidEdit color={"#FFF7E4"} />
+                            <Text ml={2} color={"#FFF7E4"}>
+                                Edit
+                            </Text>
+                        </Stack>
                     </Button>
                 </Stack>
             </Stack>

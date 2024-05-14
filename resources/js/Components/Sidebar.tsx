@@ -204,7 +204,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ contentComponent }) => {
                 </Stack>
             </Stack>
             {/* Contents */}
-            <Stack p={50} gap={"1rem"} flex={1} overflow={"hidden"}>
+            <Stack p={50} gap={"1rem"} flex={1} overflow={"auto"}>
                 <Stack
                     direction={"row"}
                     justifyContent={"space-between"}
@@ -315,7 +315,6 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ contentComponent }) => {
                         </MenuList>
                     </Menu>
                 </Stack>
-
                 {contentComponent}
             </Stack>
         </Stack>

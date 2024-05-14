@@ -20,16 +20,25 @@ const DesktopContent = () => {
             >
                 {/* LEFT */}
                 <Stack flex={1} gap={3}>
-                    <Stack direction={"row"} gap={"1.5rem"}>
+                    <Stack
+                        direction={["column", "column", "column", "row"]}
+                        gap={["1.5rem", "1.5rem", "1rem", "1.5rem"]}
+                    >
                         <Heading color={"#352919"} fontSize={"xl"}>
                             About Us
                         </Heading>
                         <Tag
                             bgColor={"#D59B70"}
+                            w={["full", "full", "8.5rem", "auto"]}
                             h={25}
                             color={"white"}
                             rounded={"full"}
-                            fontSize={"0.75rem"}
+                            fontSize={[
+                                "0.55rem",
+                                "0.55rem",
+                                "0.75rem",
+                                "0.75rem",
+                            ]}
                         >
                             +62 881 0100 29266
                         </Tag>
@@ -102,7 +111,97 @@ const DesktopContent = () => {
 };
 
 const MobileContent = () => {
-    return <Text>Mobile Specific Content</Text>;
+    return (
+        <Stack gap={10}>
+            <Stack
+                bgColor={"white"}
+                shadow={"lg"}
+                borderRadius={"2xl"}
+                p={5}
+                // w={"100%"}
+                // h={"35%"}
+            >
+                {/* LEFT */}
+                <Stack flex={1} gap={3}>
+                    <Stack direction={"row"} gap={"1.5rem"}>
+                        <Heading color={"#352919"} fontSize={"xl"}>
+                            About Us
+                        </Heading>
+                        <Tag
+                            bgColor={"#D59B70"}
+                            h={25}
+                            color={"white"}
+                            rounded={"full"}
+                            fontSize={"0.75rem"}
+                        >
+                            +62 881 0100 29266
+                        </Tag>
+                    </Stack>
+                    <Stack>
+                        <Text>
+                            Lorem ipsum dolor sit amet consectetur adipiscing
+                            elit Ut et massa mi. Aliquam in hendrerit urna.
+                            Pellentesque sit amet sapien fringilla, mattis
+                            ligula consectetur, ultrices mauris. Maecenas vitae
+                            mattis tellus. Nullam quis imperdiet augue.
+                            Vestibulum auctor ornare leo, non suscipit.
+                        </Text>
+                    </Stack>
+                </Stack>
+                <Divider
+                    orientation="horizontal"
+                    bgColor={"#D9D9D9"}
+                    h={"0.1rem"}
+                    // mx={5}
+                />
+                {/* RIGHT */}
+                <Stack flex={1} justifyContent={"space-between"}>
+                    <Stack gap={3}>
+                        <Heading color={"#352919"} fontSize={"xl"}>
+                            Location
+                        </Heading>
+                        <Text>
+                            Jl. Lestari Raya 9, Medang, Kec. Pagedangan,
+                            Kabupaten Tangerang, Banten 15334
+                        </Text>
+                    </Stack>
+                    <Stack align={"end"}>
+                        <Button
+                            bgColor={"#FFF7E4"}
+                            border={"1px solid #B5AB99"}
+                            borderRadius={"full"}
+                            w={"7rem"}
+                        >
+                            <BiSolidEdit color="#352919" />
+                            <Text color={"#352919"} ml={2}>
+                                Edit
+                            </Text>
+                        </Button>
+                    </Stack>
+                </Stack>
+            </Stack>
+            {/* <Stack>
+                <Stack direction={"row"} justifyContent={"space-between"}>
+                    <Heading color={"#352919"} fontSize={"xl"}>
+                        Menu
+                    </Heading>
+                    <Button
+                        bgColor={"#352919"}
+                        color={"#FEF6E3"}
+                        borderRadius={"full"}
+                        px={8}
+                    >
+                        <Text>+ Add</Text>
+                    </Button>
+                </Stack>
+                <Stack direction={"row"} overflowX={"auto"} gap={5}>
+                    <MenuCard />
+                    <MenuCard />
+                    <MenuCard />
+                </Stack>
+            </Stack> */}
+        </Stack>
+    );
 };
 
 export default function Edit({ auth }: PageProps) {
