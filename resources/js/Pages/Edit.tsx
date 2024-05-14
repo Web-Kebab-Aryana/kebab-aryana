@@ -8,13 +8,14 @@ import MenuCard from "@/Components/MenuCard";
 
 const DesktopContent = () => {
     return (
-        <Stack gap={20}>
+        <Stack gap={15}>
             <Stack
                 bgColor={"white"}
                 shadow={"lg"}
                 borderRadius={"2xl"}
                 p={5}
                 direction={"row"}
+                my={5}
                 // w={"100%"}
                 // h={"35%"}
             >
@@ -87,7 +88,12 @@ const DesktopContent = () => {
                 </Stack>
             </Stack>
             <Stack>
-                <Stack direction={"row"} justifyContent={"space-between"}>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    align={"center"}
+                    mb={3}
+                >
                     <Heading color={"#352919"} fontSize={"xl"}>
                         Menu
                     </Heading>
@@ -180,7 +186,7 @@ const MobileContent = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            {/* <Stack>
+            <Stack>
                 <Stack direction={"row"} justifyContent={"space-between"}>
                     <Heading color={"#352919"} fontSize={"xl"}>
                         Menu
@@ -199,7 +205,7 @@ const MobileContent = () => {
                     <MenuCard />
                     <MenuCard />
                 </Stack>
-            </Stack> */}
+            </Stack>
         </Stack>
     );
 };
