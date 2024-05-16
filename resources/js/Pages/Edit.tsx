@@ -43,9 +43,9 @@ type AboutModalState = {
 };
 
 const aboutSchema = z.object({
-    description: z.string().nonempty("Description is required"),
-    address: z.string().nonempty("Address is required"),
-    phone: z.string().nonempty("Phone is required"),
+    description: z.string({ required_error: "Description is required" }),
+    address: z.string({ required_error: "Address is required" }),
+    phone: z.string({ required_error: "Phone is required" }),
 });
 
 type AboutDataFillable = z.infer<typeof aboutSchema>;
@@ -200,7 +200,7 @@ const DesktopContent = () => {
 
                         {aboutModalState?.mode === "edit" && (
                             <form
-                                id="add-data"
+                                id="edit-about"
                                 // onSubmit={handleSubmit((data) => {
                                 //     api.post<ResponseModel>("/state", data)
                                 //         .then((res) => {
@@ -305,7 +305,7 @@ const DesktopContent = () => {
                             <Button
                                 colorScheme="blue"
                                 type="submit"
-                                form="add-data"
+                                form="edit-about"
                             >
                                 Add
                             </Button>
@@ -315,7 +315,7 @@ const DesktopContent = () => {
                             <Button
                                 colorScheme="blue"
                                 type="submit"
-                                form="add-data"
+                                form="edit-about"
                             >
                                 Save
                             </Button>
@@ -405,6 +405,7 @@ const MobileContent = () => {
                             borderRadius={"full"}
                             w={"6.5rem"}
                             mt={5}
+                            onClick={() => setAboutModalState({ mode: "edit" })}
                         >
                             <BiSolidEdit color="#352919" />
                             <Text color={"#352919"} ml={2}>
@@ -415,7 +416,11 @@ const MobileContent = () => {
                 </Stack>
             </Stack>
             <Stack mb={20}>
-                <Stack direction={"row"} justifyContent={"space-between"}>
+                <Stack
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                    mb={3}
+                >
                     <Heading color={"#352919"} fontSize={"xl"}>
                         Menu
                     </Heading>
