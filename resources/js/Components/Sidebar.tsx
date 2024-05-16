@@ -461,7 +461,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ contentComponent }) => {
             </Stack>
             {/* Content */}
             <Stack minH={"100vh"} minW={"100vw"} gap={0} pb={"4rem"}>
-                <Stack p={25} pt={75} gap={"1rem"} flex={1}>
+                <Stack p={25} pt={75} gap={"1rem"} flex={1} bgColor={"#FFF7E4"}>
                     {contentComponent}
                 </Stack>
             </Stack>

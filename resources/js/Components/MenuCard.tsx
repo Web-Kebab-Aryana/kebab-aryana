@@ -7,14 +7,19 @@ const MenuCard = () => {
         <Stack
             bgColor={"white"}
             borderRadius={"xl"}
-            direction={"row"}
-            minW={{ sm: "400px", lg: "450px" }}
+            direction={{ base: "column", sm: "row" }}
+            minW={{ base: "100px", sm: "400px", lg: "450px" }}
+            shadow={"lg"}
+            p={{ base: 5, sm: 0 }}
+            pb={{ base: 2, sm: 0 }}
         >
             <Image
-                // w={["5rem", "6rem", "8rem", "10rem"]}
+                w={{ base: "full", sm: "10rem" }}
+                h={{ base: "10rem", sm: "auto" }}
+                objectFit={"cover"}
                 src="/images/kebabSpecial.png"
                 alt="Kebab Aryana"
-                m={["0.5rem", "0.75rem", "0.75rem", "0.75rem"]}
+                m={["0rem", "0.75rem", "0.75rem", "0.75rem"]}
                 borderRadius={"xl"}
             />
             {/* Right */}
@@ -41,19 +46,23 @@ const MenuCard = () => {
                     >
                         Special Sandwich Ayam
                     </Heading>
-                    <Text color={"#35291950"} fontSize={{ md: "sm", lg: "md" }}>
+                    <Text
+                        color={"#35291950"}
+                        fontSize={{ base: "xs", md: "sm", lg: "md" }}
+                        h={{ base: "3.5rem", sm: "auto" }}
+                    >
                         Lorem ipsum dolor sit amet consectetur adipiscing elit
                         Ut et.
                     </Text>
                 </Stack>
                 {/* Buttons */}
-                <Stack align={"end"} direction={"row"} gap={{ md: 3, lg: 5 }}>
+                <Stack align={"end"} direction={"row"} gap={{ base: 3, lg: 5 }}>
                     <Button
                         bgColor={"#D9D9D9"}
                         border={"1px solid #AB2937"}
                         borderRadius={"full"}
                         // w={"7rem"}
-                        size={{ sm: "sm", lg: "md" }}
+                        size={{ base: "sm", lg: "md" }}
                     >
                         <MdDeleteForever color="#AB2937" />
                         <Text color={"#AB2937"} ml={2}>
@@ -64,7 +73,7 @@ const MenuCard = () => {
                         bgColor={"#352919"}
                         borderRadius={"full"}
                         // w={"7rem"}
-                        size={{ sm: "sm", lg: "md" }}
+                        size={{ base: "sm", lg: "md" }}
                     >
                         <Stack
                             direction={"row"}

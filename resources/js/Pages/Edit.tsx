@@ -138,7 +138,7 @@ const MobileContent = () => {
                             h={25}
                             color={"white"}
                             rounded={"full"}
-                            fontSize={"0.75rem"}
+                            fontSize={"0.65rem"}
                         >
                             +62 881 0100 29266
                         </Tag>
@@ -176,7 +176,8 @@ const MobileContent = () => {
                             bgColor={"#FFF7E4"}
                             border={"1px solid #B5AB99"}
                             borderRadius={"full"}
-                            w={"7rem"}
+                            w={"6.5rem"}
+                            mt={5}
                         >
                             <BiSolidEdit color="#352919" />
                             <Text color={"#352919"} ml={2}>
@@ -186,7 +187,7 @@ const MobileContent = () => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack mb={20}>
                 <Stack direction={"row"} justifyContent={"space-between"}>
                     <Heading color={"#352919"} fontSize={"xl"}>
                         Menu
@@ -196,11 +197,12 @@ const MobileContent = () => {
                         color={"#FEF6E3"}
                         borderRadius={"full"}
                         px={8}
+                        w={"6.5rem"}
                     >
                         <Text>+ Add</Text>
                     </Button>
                 </Stack>
-                <Stack direction={"row"} overflowX={"auto"} gap={5}>
+                <Stack overflowX={"auto"} gap={5}>
                     <MenuCard />
                     <MenuCard />
                     <MenuCard />
