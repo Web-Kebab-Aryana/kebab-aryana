@@ -30,6 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 type MenuData = {
     title: string;
     description: string;
+    harga: number;
     tag: string;
 };
 
@@ -39,9 +40,15 @@ type ModalState = {
 };
 
 const menuSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    tag: z.string(),
+    title: z.string({ required_error: "Title is required" }),
+    description: z.string({ required_error: "Description is required" }),
+    harga: z
+        .number({
+            required_error: "Price is required",
+        })
+        .min(1, "Price must be more than 1K")
+        .max(100, "Price must be less than 100K"),
+    tag: z.string({ required_error: "Tag is required" }),
 });
 
 type StateDataFillable = z.infer<typeof menuSchema>;
@@ -141,6 +148,7 @@ const MenuCard = () => {
                                         title: "Special Sandwich Ayam",
                                         description:
                                             "Lorem ipsum dolor sit amet",
+                                        harga: 35000,
                                         tag: "Kebab",
                                     },
                                 })
@@ -163,6 +171,7 @@ const MenuCard = () => {
                                         title: "Special Sandwich Ayam",
                                         description:
                                             "Lorem ipsum dolor sit amet",
+                                        harga: 35000,
                                         tag: "Kebab",
                                     },
                                 })
@@ -268,6 +277,22 @@ const MenuCard = () => {
                                             </FormErrorMessage>
                                         </FormControl>
                                         {/* DESKRIPSI MAKANAN END */}
+
+                                        {/* HARGA START */}
+                                        <FormControl isInvalid={!!errors.harga}>
+                                            <FormLabel>Price</FormLabel>
+
+                                            <Input
+                                                placeholder="Harga"
+                                                {...register("harga")}
+                                                type="number"
+                                            />
+
+                                            <FormErrorMessage>
+                                                {errors.harga &&
+                                                    errors.harga.message}
+                                            </FormErrorMessage>
+                                        </FormControl>
 
                                         {/* TAG START */}
                                         <FormControl isInvalid={!!errors.tag}>

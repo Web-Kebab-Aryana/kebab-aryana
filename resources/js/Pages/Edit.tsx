@@ -28,8 +28,9 @@ import MenuCard from "@/Components/MenuCard";
 import { z } from "zod";
 import { useState } from "react";
 import { register } from "module";
-import { Controller, set, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FilePicker from "@/Components/file-picker";
 
 type About = {
     description: string;
@@ -37,9 +38,18 @@ type About = {
     phone: string;
 };
 
+type Menu = {
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    tag: string;
+};
+
 type AboutModalState = {
     about?: About;
-    mode: "edit";
+    menu?: Menu;
+    mode: "create" | "edit";
 };
 
 const aboutSchema = z.object({
@@ -48,7 +58,39 @@ const aboutSchema = z.object({
     phone: z.string({ required_error: "Phone is required" }),
 });
 
+const maxFileSize = 2 * 1024 * 1024;
+const acceptedMimes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const menuSchema = z.object({
+    name: z.string({ required_error: "Name is required" }),
+    price: z.number({ required_error: "Price is required" }),
+    description: z.string({ required_error: "Description is required" }),
+    image: z
+        .instanceof(Blob)
+        .refine(
+            (file) => {
+                if (!file) return true;
+                if (file.size > maxFileSize) {
+                    return false;
+                }
+                if (!acceptedMimes.includes(file.type)) {
+                    return false;
+                }
+                return true;
+            },
+            {
+                message: `File size must be under ${
+                    maxFileSize / 1024 / 1024
+                }MB and type must be one of ${acceptedMimes.join(", ")}`,
+            }
+        )
+        .optional(),
+    tag: z.string({ required_error: "Tag is required" }),
+});
+
 type AboutDataFillable = z.infer<typeof aboutSchema>;
+
+type MenuDataFillable = z.infer<typeof menuSchema>;
 
 const DesktopContent = () => {
     const {
@@ -59,7 +101,7 @@ const DesktopContent = () => {
         reset,
         watch,
         formState: { errors },
-    } = useForm<AboutDataFillable>({
+    } = useForm<AboutDataFillable | MenuDataFillable>({
         resolver: zodResolver(aboutSchema),
     });
 
@@ -163,6 +205,7 @@ const DesktopContent = () => {
                         color={"#FEF6E3"}
                         borderRadius={"full"}
                         px={8}
+                        onClick={() => setAboutModalState({ mode: "create" })}
                     >
                         <Text>+ Add</Text>
                     </Button>
@@ -186,17 +229,188 @@ const DesktopContent = () => {
                         {/* {modalState?.mode === "delete"
                             ? "Delete STATE"
                             : "Create STATE"} */}
-                        Edit About Us
+                        {aboutModalState?.mode === "create"
+                            ? "Add Menu"
+                            : "Edit About Us"}
                     </ModalHeader>
                     <ModalCloseButton />
 
                     <ModalBody>
-                        {/* {modalState?.mode === "delete" && (
-                            <Text>
-                                Are you sure to delete{" "}
-                                <b>{modalState.state?.name}</b> ?{" "}
-                            </Text>
-                        )} */}
+                        {aboutModalState?.mode === "create" && (
+                            <form
+                                id="add-data"
+                                // onSubmit={handleSubmit((data) => {
+                                //     api.post<ResponseModel>("/state", data)
+                                //         .then((res) => {
+                                //             toast({
+                                //                 title: "Success",
+                                //                 description: res.data.message,
+                                //                 status: "success",
+                                //             });
+                                //         })
+                                //         .catch(errorHandler)
+                                //         .finally(() => {
+                                //             stateData.mutate();
+                                //             setModalState(undefined);
+                                //         });
+                                // })}
+                                onSubmit={() => {
+                                    setAboutModalState(undefined);
+                                }}
+                            >
+                                <Stack spacing={4}>
+                                    {/* NAME START */}
+                                    <FormControl isInvalid={!!errors.name}>
+                                        <FormLabel>Menu Name</FormLabel>
+
+                                        <Input
+                                            placeholder="Menu Name"
+                                            {...register("name")}
+                                            type="text"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.name && errors.name.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* NAME END */}
+                                    {/* PRICE START */}
+                                    <FormControl isInvalid={!!errors.price}>
+                                        <FormLabel>Price</FormLabel>
+
+                                        <Input
+                                            placeholder="Price"
+                                            {...register("price")}
+                                            type="number"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.price &&
+                                                errors.price.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* DESCRIPTION START */}
+                                    <FormControl
+                                        isInvalid={!!errors.description}
+                                    >
+                                        <FormLabel>Menu Description</FormLabel>
+
+                                        <Textarea
+                                            placeholder="description"
+                                            {...register("description")}
+                                            // type="text"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.description &&
+                                                errors.description.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* DESCRIPTION END */}
+                                    {/* IMAGE START */}
+                                    <FormControl isInvalid={!!errors.image}>
+                                        <FormLabel>Image</FormLabel>
+
+                                        <Stack
+                                            my={"1rem"}
+                                            align={"center"}
+                                            justify={"center"}
+                                        >
+                                            {/* <Image
+                                                w={"10rem"}
+                                                h={"10rem"}
+                                                src={
+                                                    stateData.data?.image ===
+                                                    "-"
+                                                        ? "/icons/imgplaceholder.png"
+                                                        : `${
+                                                              import.meta.env
+                                                                  .VITE_API_BASE_URL
+                                                          }${
+                                                              stateData.data
+                                                                  ?.image
+                                                          }`
+                                                }
+                                                rounded={"md"}
+                                                fit={"contain"}
+                                                alt={`image-${stateData.data?.name}`}
+                                            /> */}
+                                        </Stack>
+
+                                        {/* <Controller
+                                        // control={control}
+                                        // name="image"
+                                        // render={({
+                                        //     field: { onChange },
+                                        // }) => (
+                                        //     <FilePicker
+                                        //         onFileChange={(files) => {
+                                        //             console.log(files);
+                                        //             const file = files[0];
+                                        //             if (!file) return;
+
+                                        //             const options = {
+                                        //                 maxSizeMB: 0.5,
+                                        //                 maxWidthOrHeight: 768,
+                                        //                 useWebWorker: true,
+                                        //             };
+
+                                        //             imageCompression(
+                                        //                 file,
+                                        //                 options
+                                        //             )
+                                        //                 .then(
+                                        //                     (
+                                        //                         compressedFile
+                                        //                     ) => {
+                                        //                         onChange(
+                                        //                             compressedFile
+                                        //                         );
+                                        //                     }
+                                        //                 )
+                                        //                 .catch((err) => {
+                                        //                     setError(
+                                        //                         "image",
+                                        //                         {
+                                        //                             type: "validate",
+                                        //                             message:
+                                        //                                 err.message,
+                                        //                         }
+                                        //                     );
+                                        //                 });
+                                        //         }}
+                                        //         placeholder="Klik disini untuk mengganti image"
+                                        //         accept="image/*"
+                                        //     />
+                                        // )}
+                                        /> */}
+
+                                        <FormErrorMessage>
+                                            {errors.image &&
+                                                errors.image.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* IMAGE END */}
+                                    {/* TAG START */}
+                                    <FormControl isInvalid={!!errors.tag}>
+                                        <FormLabel>Tag</FormLabel>
+
+                                        <Select placeholder="Select Tag">
+                                            <option value="Kebab">Kebab</option>
+                                            <option value="Nasi">Nasi</option>
+                                            <option value="Snack">Snack</option>
+                                            <option value="Minuman">
+                                                Minuman
+                                            </option>
+                                        </Select>
+
+                                        <FormErrorMessage>
+                                            {errors.tag && errors.tag.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                </Stack>
+                            </form>
+                        )}
 
                         {aboutModalState?.mode === "edit" && (
                             <form
@@ -310,6 +524,15 @@ const DesktopContent = () => {
                                 Add
                             </Button>
                         )} */}
+                        {aboutModalState?.mode === "create" && (
+                            <Button
+                                colorScheme="blue"
+                                type="submit"
+                                form="add-data"
+                            >
+                                Add
+                            </Button>
+                        )}
 
                         {aboutModalState?.mode === "edit" && (
                             <Button
