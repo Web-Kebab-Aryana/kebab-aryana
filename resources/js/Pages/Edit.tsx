@@ -2,11 +2,71 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import Sidebar from "@/Components/Sidebar";
-import { Stack, Text, Tag, Heading, Divider, Button } from "@chakra-ui/react";
+import {
+    Stack,
+    Text,
+    Tag,
+    Heading,
+    Divider,
+    Button,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Select,
+    Textarea,
+} from "@chakra-ui/react";
 import { BiSolidEdit } from "react-icons/bi";
 import MenuCard from "@/Components/MenuCard";
+import { z } from "zod";
+import { useState } from "react";
+import { register } from "module";
+import { Controller, set, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type About = {
+    description: string;
+    address: string;
+    phone: string;
+};
+
+type AboutModalState = {
+    about?: About;
+    mode: "edit";
+};
+
+const aboutSchema = z.object({
+    description: z.string().nonempty("Description is required"),
+    address: z.string().nonempty("Address is required"),
+    phone: z.string().nonempty("Phone is required"),
+});
+
+type AboutDataFillable = z.infer<typeof aboutSchema>;
 
 const DesktopContent = () => {
+    const {
+        handleSubmit,
+        register,
+        setError,
+        control,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm<AboutDataFillable>({
+        resolver: zodResolver(aboutSchema),
+    });
+
+    const [aboutModalState, setAboutModalState] = useState<
+        AboutModalState | undefined
+    >();
+
     return (
         <Stack gap={15}>
             <Stack
@@ -78,6 +138,7 @@ const DesktopContent = () => {
                             border={"1px solid #B5AB99"}
                             borderRadius={"full"}
                             w={"7rem"}
+                            onClick={() => setAboutModalState({ mode: "edit" })}
                         >
                             <BiSolidEdit color="#352919" />
                             <Text color={"#352919"} ml={2}>
@@ -112,6 +173,156 @@ const DesktopContent = () => {
                     <MenuCard />
                 </Stack>
             </Stack>
+            {/* MODAL START */}
+            <Modal
+                lockFocusAcrossFrames={true}
+                isCentered
+                isOpen={!!aboutModalState}
+                onClose={() => setAboutModalState(undefined)}
+            >
+                <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+                <ModalContent>
+                    <ModalHeader fontWeight={"bold"}>
+                        {/* {modalState?.mode === "delete"
+                            ? "Delete STATE"
+                            : "Create STATE"} */}
+                        Edit About Us
+                    </ModalHeader>
+                    <ModalCloseButton />
+
+                    <ModalBody>
+                        {/* {modalState?.mode === "delete" && (
+                            <Text>
+                                Are you sure to delete{" "}
+                                <b>{modalState.state?.name}</b> ?{" "}
+                            </Text>
+                        )} */}
+
+                        {aboutModalState?.mode === "edit" && (
+                            <form
+                                id="add-data"
+                                // onSubmit={handleSubmit((data) => {
+                                //     api.post<ResponseModel>("/state", data)
+                                //         .then((res) => {
+                                //             toast({
+                                //                 title: "Success",
+                                //                 description: res.data.message,
+                                //                 status: "success",
+                                //             });
+                                //         })
+                                //         .catch(errorHandler)
+                                //         .finally(() => {
+                                //             stateData.mutate();
+                                //             setModalState(undefined);
+                                //         });
+                                // })}
+                                onSubmit={() => {
+                                    setAboutModalState(undefined);
+                                }}
+                            >
+                                <Stack spacing={4}>
+                                    {/* DESKRIPSI START */}
+                                    <FormControl
+                                        isInvalid={!!errors.description}
+                                    >
+                                        <FormLabel>Description</FormLabel>
+
+                                        <Textarea
+                                            placeholder="Description"
+                                            {...register("description")}
+                                            // type="text"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.description &&
+                                                errors.description.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* DESKRIPSI END */}
+                                    {/* LOCATION START */}
+                                    <FormControl isInvalid={!!errors.location}>
+                                        <FormLabel>Location</FormLabel>
+
+                                        <Textarea
+                                            placeholder="Location"
+                                            {...register("location")}
+                                            // type="text"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.location &&
+                                                errors.location.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                    {/* LOCATION END */}
+                                    {/* PHONE START */}
+                                    <FormControl isInvalid={!!errors.phone}>
+                                        <FormLabel>Phone</FormLabel>
+
+                                        <Input
+                                            placeholder="Phone"
+                                            {...register("phone")}
+                                            // type="text"
+                                        />
+
+                                        <FormErrorMessage>
+                                            {errors.phone &&
+                                                errors.phone.message}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                </Stack>
+                            </form>
+                        )}
+                    </ModalBody>
+
+                    <ModalFooter>
+                        {/* {modalState?.mode === "delete" && (
+                            <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                    api.delete<ResponseModel>(
+                                        `/state/${modalState.state?.id}`
+                                    )
+                                        .then((res) => {
+                                            toast({
+                                                title: "Deleted",
+                                                description: res.data.message,
+                                                status: "error",
+                                            });
+                                        })
+                                        .catch(errorHandler)
+                                        .finally(() => {
+                                            stateData.mutate();
+                                            setModalState(undefined);
+                                        });
+                                }}
+                            >
+                                Delete
+                            </Button>
+                        )}
+
+                        {modalState?.mode === "create" && (
+                            <Button
+                                colorScheme="blue"
+                                type="submit"
+                                form="add-data"
+                            >
+                                Add
+                            </Button>
+                        )} */}
+
+                        {aboutModalState?.mode === "edit" && (
+                            <Button
+                                colorScheme="blue"
+                                type="submit"
+                                form="add-data"
+                            >
+                                Save
+                            </Button>
+                        )}
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Stack>
     );
 };
