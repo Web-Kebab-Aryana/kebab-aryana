@@ -68,7 +68,6 @@ const MenuCard = () => {
                 }
             `}
             </style>
-            ;
             <Stack
                 bgColor={"white"}
                 borderRadius={"xl"}
