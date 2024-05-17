@@ -135,14 +135,17 @@ export default function History({
     });
 
     return (
-        <Stack bgColor={"#FFF7E4"} h={"100vh"} w={"100vw"} direction={"row"}>
+        <Stack
+            bgColor={"#FFF7E4"}
+            minH={"100vh"}
+            minW={"100vw"}
+            direction={"row"}
+        >
             <Sidebar auth={auth}>
                 <Stack
                     bgColor={"white"}
-                    w={"full"}
                     shadow={"lg"}
                     rounded={"xl"}
-                    overflow={"auto"}
                     flex={1}
                     mt={"1rem"}
                 >
