@@ -25,30 +25,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/login', function () {
-    return Inertia::render('Auth/Login');
-});
-
-Route::get('/register', function () {
-    return Inertia::render('Auth/Register');
-});
-
-Route::get('/forgotpassword', function () {
-    return Inertia::render('Auth/ForgotPassword');
-});
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-});
-
-Route::get('/history', function () {
-    return Inertia::render('History');
-});
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::prefix('cms')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('CMS/Dashboard');
+        });
+    
+        Route::get('/history', function () {
+            return Inertia::render('CMS/History');
+        });
+    });
+    
 });
 
 require __DIR__ . '/auth.php';
