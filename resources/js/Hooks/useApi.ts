@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { AxiosError, isAxiosError } from "axios";
 
-type ResponseModel<T = any> = {
+export type ResponseModel<T = any> = {
     message: string;
     data?: T;
 };
