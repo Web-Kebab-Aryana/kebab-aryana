@@ -26,7 +26,6 @@ import { BiSolidEdit } from "react-icons/bi";
 import MenuCard from "@/Components/MenuCard";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { register } from "module";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FilePicker from "@/Components/file-picker";

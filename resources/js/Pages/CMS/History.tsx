@@ -1,5 +1,3 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import Sidebar from "@/Components/Sidebar";
 import {
@@ -11,48 +9,44 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Select,
     Stack,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 import DataTable from "@/Components/Datatables";
 import { MUIDataTableColumn } from "mui-datatables";
 import { MdDeleteForever } from "react-icons/md";
 import { Button as MuiButton } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
+import { ResponseModel, useToastErrorHandler } from "@/Hooks/useApi";
+import { router } from "@inertiajs/react";
 
-const historyData = [
-    {
-        id: 1,
-        nama: "John Doe",
-        harga: "Rp. 100.000",
-        tanggalTransaksi: "2021-10-10",
-        notaPembelian: "123456",
-        action: "Detail",
-    },
-    {
-        id: 2,
-        nama: "Jane Doe",
-        harga: "Rp. 150.000",
-        tanggalTransaksi: "2021-10-10",
-        notaPembelian: "123456",
-        action: "Detail",
-    },
-];
+type TransactionHistory = {
+    id: number;
+    customer_name: string;
+    total: number;
+    transaction_date: string;
+};
 
 type ModalState = {
-    id?: number;
+    transaction: TransactionHistory;
     mode: "delete";
 };
 
-type Data = {
-    id: number;
-    name: string;
-    harga: string;
-    notaPembelian: boolean;
-};
+export default function History({
+    auth,
+    transactions,
+}: PageProps & {
+    transactions: TransactionHistory[];
+}) {
+    const toast = useToast();
+    const errorHandler = useToastErrorHandler();
 
-export default function History({ auth }: PageProps) {
     const [modalState, setModalState] = useState<ModalState | undefined>();
+    const [transactionDateSelect, setTransactionDateSelect] =
+        useState<string>("today");
 
     const colDefs: MUIDataTableColumn[] = [
         {
@@ -60,26 +54,35 @@ export default function History({ auth }: PageProps) {
             label: "ID Transaksi",
         },
         {
-            name: "nama",
+            name: "customer_name",
             label: "Nama Pembeli",
         },
         {
-            name: "harga",
+            name: "total",
             label: "Total Harga",
         },
         {
-            name: "tanggalTransaksi",
+            name: "transaction_date",
             label: "Tanggal Transaksi",
-        },
-        {
-            name: "notaPembelian",
-            label: "Nota Pembelian",
+            options: {
+                customBodyRender: (value: string) => {
+                    return new Date(value).toLocaleString("id-ID", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    });
+                },
+            },
         },
         {
             name: "id",
             label: "Action",
             options: {
                 customBodyRender: (value: number) => {
+                    const transaction = transactions.find(
+                        (transaction) => transaction.id === value
+                    );
                     return (
                         <MuiButton
                             variant={"contained"}
@@ -92,7 +95,10 @@ export default function History({ auth }: PageProps) {
                                 backgroundColor: "button.success",
                             }}
                             onClick={() =>
-                                setModalState({ id: value, mode: "delete" })
+                                setModalState({
+                                    transaction: transaction!,
+                                    mode: "delete",
+                                })
                             }
                         >
                             <MdDeleteForever />
@@ -102,6 +108,31 @@ export default function History({ auth }: PageProps) {
             },
         },
     ];
+
+    const filteredTransactions = transactions.filter((transaction) => {
+        const transactionDate = new Date(transaction.transaction_date);
+        const today = new Date();
+        const weekStart = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate() - today.getDay()
+        );
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+
+        if (transactionDateSelect === "today") {
+            return (
+                transactionDate.getDate() === today.getDate() &&
+                transactionDate.getMonth() === today.getMonth() &&
+                transactionDate.getFullYear() === today.getFullYear()
+            );
+        } else if (transactionDateSelect === "week") {
+            return transactionDate >= weekStart && transactionDate <= today;
+        } else if (transactionDateSelect === "month") {
+            return transactionDate >= monthStart && transactionDate <= today;
+        }
+
+        return false;
+    });
 
     return (
         <Stack bgColor={"#FFF7E4"} h={"100vh"} w={"100vw"} direction={"row"}>
@@ -113,8 +144,25 @@ export default function History({ auth }: PageProps) {
                     rounded={"xl"}
                     overflow={"auto"}
                     flex={1}
+                    mt={"1rem"}
                 >
-                    <DataTable colDefs={colDefs} data={historyData} />
+                    <Stack p={"1rem"} w={"full"} align={"end"}>
+                        <Select
+                            value={transactionDateSelect}
+                            onChange={(event) =>
+                                setTransactionDateSelect(event.target.value)
+                            }
+                            w={"9rem"}
+                            rounded={"full"}
+                            bgColor={"#FFF7E4"}
+                        >
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </Select>
+                    </Stack>
+
+                    <DataTable colDefs={colDefs} data={filteredTransactions} />
                     {/* MODAL START */}
                     <Modal
                         isCentered
@@ -134,12 +182,7 @@ export default function History({ auth }: PageProps) {
                                 <Text>
                                     Are you sure to delete{" "}
                                     <b>
-                                        {
-                                            historyData.find(
-                                                (data) =>
-                                                    data.id === modalState?.id
-                                            )?.nama
-                                        }
+                                        {modalState?.transaction.customer_name}
                                     </b>{" "}
                                     ?
                                 </Text>
@@ -149,43 +192,25 @@ export default function History({ auth }: PageProps) {
                                 <Button
                                     colorScheme="red"
                                     onClick={() => {
-                                        // const data = verificationData.data?.find(
-                                        //     (data) => data.id === modalState?.id
-                                        // );
-                                        // if (data?.role === "panitia") {
-                                        //     api.delete(`/panitia/${modalState?.id}`)
-                                        //         .then(() => {
-                                        //             toast({
-                                        //                 title: "Berhasil",
-                                        //                 description: `Data ${data.name} berhasil dihapus`,
-                                        //                 status: "error",
-                                        //                 duration: 5000,
-                                        //                 isClosable: true,
-                                        //             });
-                                        //         })
-                                        //         .catch(errorHandler)
-                                        //         .finally(() => {
-                                        //             setModalState(undefined);
-                                        //             verificationData.mutate();
-                                        //         });
-                                        // } else {
-                                        //     api.delete(`/organisator/${modalState?.id}`)
-                                        //         .then(() => {
-                                        //             toast({
-                                        //                 title: "Berhasil Dihapus!",
-                                        //                 description: `Data ${data?.name} berhasil dihapus`,
-                                        //                 status: "error",
-                                        //                 duration: 5000,
-                                        //                 isClosable: true,
-                                        //             });
-                                        //         })
-                                        //         .catch(errorHandler)
-                                        //         .finally(() => {
-                                        //             setModalState(undefined);
-                                        //             verificationData.mutate();
-                                        //         });
-                                        // }
-                                        setModalState(undefined);
+                                        axios
+                                            .delete<ResponseModel>(
+                                                `/api/transaction/${modalState?.transaction.id}`
+                                            )
+                                            .then((res) => {
+                                                toast({
+                                                    title: "Success",
+                                                    description:
+                                                        res.data.message,
+                                                    status: "success",
+                                                    duration: 5000,
+                                                    isClosable: true,
+                                                });
+                                            })
+                                            .catch(errorHandler)
+                                            .finally(() => {
+                                                setModalState(undefined);
+                                                router.reload();
+                                            });
                                     }}
                                 >
                                     Delete

@@ -42,9 +42,7 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
             return Inertia::render('CMS/Dashboard');
         });
 
-        Route::get('/history', function () {
-            return Inertia::render('CMS/History');
-        });
+        Route::get('/history', [TransactionHistoryController::class, 'view']);
 
         Route::get("/edit", [ContentController::class, 'index']);
     });
