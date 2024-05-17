@@ -34,12 +34,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/', function () {
             return Inertia::render('CMS/Dashboard');
         });
-    
+
         Route::get('/history', function () {
             return Inertia::render('CMS/History');
         });
     });
-    
+
 });
 
 require __DIR__ . '/auth.php';
