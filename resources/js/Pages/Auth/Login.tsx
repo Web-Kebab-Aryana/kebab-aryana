@@ -13,7 +13,7 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { BsArrowUpRightCircle } from "react-icons/bs";
-import { Link as InertiaLink, Head } from "@inertiajs/react";
+import { Link as InertiaLink, Head, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import { useToastErrorHandler } from "@/Hooks/useApi";
 import axios from "axios";
@@ -46,11 +46,13 @@ const Login = () => {
             .then((response) => {
                 toast({
                     title: "Success",
-                    description: response.data.message,
+                    description: "You have successfully logged in",
                     status: "success",
                     duration: 9000,
                     isClosable: true,
                 });
+
+                router.visit("/cms");
             })
             .catch(errorHandler);
     };
@@ -233,9 +235,9 @@ const Login = () => {
                                 {...register("password", {
                                     required: "Password is required",
                                     minLength: {
-                                        value: 6,
+                                        value: 8,
                                         message:
-                                            "Password at least 6 characters",
+                                            "Password at least 8 characters",
                                     },
                                 })}
                             />

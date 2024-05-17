@@ -13,7 +13,7 @@ import {
     Link,
 } from "@chakra-ui/react";
 
-import { Link as InertiaLink, Head } from "@inertiajs/react";
+import { Link as InertiaLink, Head, router } from "@inertiajs/react";
 
 import { BsArrowUpRightCircle } from "react-icons/bs";
 import axios from "axios";
@@ -48,6 +48,8 @@ const Register: React.FC = () => {
                     duration: 9000,
                     isClosable: true,
                 });
+
+                router.visit("/login");
             })
             .catch(errorHandler);
     };
@@ -258,9 +260,9 @@ const Register: React.FC = () => {
                                 {...register("password", {
                                     required: "Password is required",
                                     minLength: {
-                                        value: 6,
+                                        value: 8,
                                         message:
-                                            "Password at least 6 characters",
+                                            "Password at least 8 characters",
                                     },
                                 })}
                             />
@@ -291,9 +293,9 @@ const Register: React.FC = () => {
                                     required:
                                         "Password confirmation is required",
                                     minLength: {
-                                        value: 6,
+                                        value: 8,
                                         message:
-                                            "password_confirmation at least 6 characters",
+                                            "password confirmation at least 8 characters",
                                     },
                                     deps: ["password"],
                                     validate: (value) =>
