@@ -1,47 +1,74 @@
 import { Button, Heading, Image, Stack, Tag, Text } from "@chakra-ui/react";
-import { BiSolidEdit } from "react-icons/bi";
-import { MdDeleteForever } from "react-icons/md";
+import { useState } from "react";
 
-const OrderCard = () => {
+type Menu = {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+    category: string;
+    image: string;
+};
+
+function kFormatter(num: number) {
+    return Math.abs(num) > 999
+        ? // @ts-expect-error bacot
+          Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "K"
+        : Math.sign(num) * Math.abs(num);
+}
+
+const OrderCard = ({
+    menu,
+    onAdd,
+}: {
+    menu: Menu;
+    onAdd: (qty: number) => void;
+}) => {
+    const [quantity, setQuantity] = useState<number>(0);
+
     return (
         <>
             <Stack
                 bgColor={"white"}
                 borderRadius={"xl"}
-                direction={"row"}
-                minW={["380px", "390px", "390px", "425px", "425px"]}
-                maxW={["380px", "390px", "390px", "425px", "425px"]}
+                direction={["column", "column", "row", "row", "row"]}
+                w={["full", "full", "28rem", "28rem", "28rem"]}
+                gap={0}
+                align={"center"}
             >
                 <Image
-                    // w={["5rem", "6rem", "8rem", "10rem"]}
-                    src="/images/kebab.png"
-                    alt="Kebab Aryana"
-                    m={["0.5rem", "0.75rem", "0.75rem", "0.75rem"]}
-                    borderRadius={"xl"}
+                    src={`/storage/${menu.image}`}
+                    alt={menu.name}
+                    fit={"cover"}
+                    w={["full", "16rem", "8rem", "10rem", "10rem"]}
+                    h={["12rem", "12rem", "8rem", "10rem", "10rem"]}
+                    m={["0", "0", "0.75rem", "0.75rem", "0.75rem"]}
+                    p={["1rem", "0.75rem", "0", "0", "0"]}
+                    rounded={"xl"}
                 />
 
                 {/* Right */}
-                <Stack p={5} pl={0} justifyContent={"space-between"} w={"100%"}>
-                    <Stack w={"100%"}>
+                <Stack p={"1rem"} justifyContent={"space-between"} w={"full"}>
+                    <Stack flex={1}>
                         <Stack
                             direction={"row"}
                             justifyContent={"space-between"}
-                            w={["100%", "100%", "90%", "100%", "100%"]}
+                            w={"full"}
                         >
                             <Tag
                                 bgColor={"#D9D9D9"}
                                 h={25}
                                 color={"#35291950"}
                                 rounded={"full"}
-                                fontSize={"0.75rem"}
+                                fontSize={["xs", "sm", "sm", "sm", "sm"]}
                             >
-                                Kebab
+                                {menu.category}
                             </Tag>
                             <Heading
                                 color={"#D59B70"}
                                 fontSize={["sm", "sm", "sm", "md", "md"]}
                             >
-                                35K
+                                {kFormatter(menu.price)}
                             </Heading>
                         </Stack>
                         {/* Name */}
@@ -49,14 +76,13 @@ const OrderCard = () => {
                             color={"#352919"}
                             fontSize={["sm", "sm", "sm", "md", "md"]}
                         >
-                            Special Sandwich Ayam
+                            {menu.name}
                         </Heading>
                         <Text
                             color={"#35291950"}
                             fontSize={["xs", "xs", "xs", "sm", "sm"]}
                         >
-                            Kebab panjang seperti titit kuda dengan potonngan
-                            ayam yang gyatt
+                            {menu.description}
                         </Text>
                     </Stack>
                     {/* Buttons */}
@@ -73,18 +99,24 @@ const OrderCard = () => {
                                 size={["xs", "xs", "xs", "sm", "sm"]}
                                 // borderRadius={"full"}
                                 // w={"7rem"}
+                                onClick={() =>
+                                    setQuantity((qty) =>
+                                        qty === 0 ? 0 : qty - 1
+                                    )
+                                }
                             >
                                 <Text fontWeight={"bold"} color={"#352919"}>
                                     -
                                 </Text>
                             </Button>
-                            <Text color={"#352919"}>0</Text>
+                            <Text color={"#352919"}>{quantity}</Text>
                             <Button
                                 bgColor={"white"}
                                 border={"1px solid #35291950"}
                                 size={["xs", "xs", "xs", "sm", "sm"]}
                                 // borderRadius={"full"}
                                 // w={"7rem"}
+                                onClick={() => setQuantity((qty) => qty + 1)}
                             >
                                 <Text fontWeight={"bold"} color={"#352919"}>
                                     +
@@ -96,6 +128,7 @@ const OrderCard = () => {
                             bgColor={"#352919"}
                             borderRadius={"full"}
                             size={["xs", "xs", "xs", "sm", "sm"]}
+                            onClick={() => onAdd(quantity)}
                         >
                             <Text color={"#FFF7E4"}>Add to Cart</Text>
                         </Button>

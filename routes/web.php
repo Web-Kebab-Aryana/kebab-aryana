@@ -46,6 +46,8 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         Route::get('/history', [TransactionHistoryController::class, 'view']);
 
         Route::get("/edit", [ContentController::class, 'index']);
+
+        Route::get("/order", [OrderController::class, 'index']);
     });
 
     // page Client
