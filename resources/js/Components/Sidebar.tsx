@@ -228,7 +228,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children, auth }) => {
                         justifyContent={"space-between"}
                         w={"full"}
                     >
-                        <Heading>
+                        <Heading fontFamily={"Poppins"}>
                             {url === "/cms"
                                 ? "Dashboard"
                                 : url === "/cms/order"
