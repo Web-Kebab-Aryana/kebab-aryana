@@ -25,9 +25,17 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/login', function () {
+    return Inertia::render('Auth/Login');
+});
+
+Route::get('/register', function () {
+    return Inertia::render('Auth/Register');
+});
+
+Route::get('/forgotpassword', function () {
+    return Inertia::render('Auth/ForgotPassword');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
