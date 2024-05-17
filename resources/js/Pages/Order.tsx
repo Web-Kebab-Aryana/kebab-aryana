@@ -19,8 +19,131 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 const DesktopContent = () => {
     return (
         <>
+            {/* Menu */}
+            <Stack direction={"row"} w={"100%"} h={"100%"} gap={0}>
+                <Stack
+                    flex={"2"}
+                    rounded={"3xl"}
+                    bgColor={"#F4F4F4"}
+                    px={["1rem", "1rem", "1rem", "2.5rem", "2.5rem"]}
+                    w={"100%"}
+                    h={"100%"}
+                >
+                    {/* menu bar */}
+                    <Stack
+                        h={"7rem"}
+                        w={"100%"}
+                        py={"4rem"}
+                        direction={"row"}
+                        align={"center"}
+                        justify={"space-between"}
+                    >
+                        <Stack>
+                            <Text
+                                fontWeight={"bold"}
+                                fontSize={["3xl", "3xl", "2xl", "3xl", "3xl"]}
+                                textColor={"#352919"}
+                            >
+                                Menu
+                            </Text>
+                            <Stack
+                                direction={"row"}
+                                w={"100%"}
+                                flexWrap={"wrap"}
+                            >
+                                <Button
+                                    size={["sm", "sm", "xs", "sm", "sm"]}
+                                    rounded={"3xl"}
+                                    w={["6rem", "6rem", "4rem", "6rem", "6rem"]}
+                                    bgColor={"#D9D9D9"}
+                                    border={"1px solid #352919"}
+                                    _active={{ bgColor: "#ECB68E" }}
+                                    _hover={{ bgColor: "#ECB68E" }}
+                                >
+                                    All Menu
+                                </Button>
+                                <Button
+                                    size={["sm", "sm", "xs", "sm", "sm"]}
+                                    rounded={"3xl"}
+                                    w={["6rem", "6rem", "4rem", "6rem", "6rem"]}
+                                    bgColor={"#D9D9D9"}
+                                    border={"1px solid #352919"}
+                                    _active={{ bgColor: "#ECB68E" }}
+                                    _hover={{ bgColor: "#ECB68E" }}
+                                >
+                                    Kebab
+                                </Button>
+                                <Button
+                                    size={["sm", "sm", "xs", "sm", "sm"]}
+                                    rounded={"3xl"}
+                                    w={["6rem", "6rem", "4rem", "6rem", "6rem"]}
+                                    bgColor={"#D9D9D9"}
+                                    border={"1px solid #352919"}
+                                    _active={{ bgColor: "#ECB68E" }}
+                                    _hover={{ bgColor: "#ECB68E" }}
+                                >
+                                    Nasi
+                                </Button>
+                                <Button
+                                    size={["sm", "sm", "xs", "sm", "sm"]}
+                                    rounded={"3xl"}
+                                    w={["6rem", "6rem", "4rem", "6rem", "6rem"]}
+                                    bgColor={"#D9D9D9"}
+                                    border={"1px solid #352919"}
+                                    _active={{ bgColor: "#ECB68E" }}
+                                    _hover={{ bgColor: "#ECB68E" }}
+                                >
+                                    Snack
+                                </Button>
+                                <Button
+                                    size={["sm", "sm", "xs", "sm", "sm"]}
+                                    rounded={"3xl"}
+                                    w={["6rem", "6rem", "4rem", "6rem", "6rem"]}
+                                    bgColor={"#D9D9D9"}
+                                    border={"1px solid #352919"}
+                                    _active={{ bgColor: "#ECB68E" }}
+                                    _hover={{ bgColor: "#ECB68E" }}
+                                >
+                                    Minuman
+                                </Button>
+                                {/* <Input
+                            w={"12rem"}
+                            placeholder="Search items here"
+                            border={"1px solid #352919"}
+                            rounded={"3xl"}
+                            size={"sm"}
+                        ></Input> */}
+                            </Stack>
+                        </Stack>
+                        <IconButton
+                            size={"lg"}
+                            aria-label="cart"
+                            icon={<FaCartPlus color="#ECB68E" />}
+                            rounded={"full"}
+                            bgColor={"#352919"}
+                        ></IconButton>
+                    </Stack>
+
+                    {/* menu items */}
+                    <Stack
+                        direction={"row"}
+                        flexWrap={"wrap"}
+                        justifyContent={"space-between"}
+                    >
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                        <OrderCard />
+                    </Stack>
+                </Stack>
+            </Stack>
             {/* Cart */}
-            <Stack
+            {/* <Stack
                 flex={"2"}
                 direction={["column"]}
                 rounded={"3xl"}
@@ -102,7 +225,7 @@ const DesktopContent = () => {
                         </Stack>
                     </Stack>
                 </Stack>
-            </Stack>
+            </Stack> */}
         </>
     );
 };
