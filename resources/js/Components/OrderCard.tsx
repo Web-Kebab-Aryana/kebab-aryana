@@ -9,8 +9,8 @@ const OrderCard = () => {
                 bgColor={"white"}
                 borderRadius={"xl"}
                 direction={"row"}
-                minW={["350px", "350px", "390px", "425px", "425px"]}
-                maxW={["350px", "350px", "390px", "425px", "425px"]}
+                minW={["380px", "390px", "390px", "425px", "425px"]}
+                maxW={["380px", "390px", "390px", "425px", "425px"]}
             >
                 <Image
                     // w={["5rem", "6rem", "8rem", "10rem"]}
@@ -55,8 +55,8 @@ const OrderCard = () => {
                             color={"#35291950"}
                             fontSize={["xs", "xs", "xs", "sm", "sm"]}
                         >
-                            Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit Ut et.
+                            Kebab panjang seperti titit kuda dengan potonngan
+                            ayam yang gyatt
                         </Text>
                     </Stack>
                     {/* Buttons */}
