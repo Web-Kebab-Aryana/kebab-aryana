@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import {
     Button,
     Image,
@@ -9,27 +9,55 @@ import {
     FormLabel,
     FormControl,
     Show,
+    Link,
+    useToast,
 } from "@chakra-ui/react";
 import { BsArrowUpRightCircle } from "react-icons/bs";
+import { Link as InertiaLink, Head } from "@inertiajs/react";
+import { useEffect } from "react";
+import { useToastErrorHandler } from "@/Hooks/useApi";
+import axios from "axios";
 
 interface IFormInput {
-    username: string;
+    email: string;
     password: string;
+    remember: boolean;
 }
 
-const Login: React.FC = () => {
+const Login = () => {
     const {
         register,
         handleSubmit,
+        control,
+        setValue,
         formState: { errors },
     } = useForm<IFormInput>();
 
+    const toast = useToast();
+    const errorHandler = useToastErrorHandler();
+
+    useEffect(() => {
+        setValue("remember", true);
+    }, []);
+
     const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        console.log(data);
+        axios
+            .post("/login", data)
+            .then((response) => {
+                toast({
+                    title: "Success",
+                    description: response.data.message,
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            })
+            .catch(errorHandler);
     };
 
     return (
         <>
+            <Head title="Sign In" />
             <Stack
                 direction={["column", "column", "row", "row", "row"]}
                 minW={"100vw"}
@@ -95,6 +123,8 @@ const Login: React.FC = () => {
                         pt={["0rem", "0rem", "17rem"]}
                     >
                         <Button
+                            as={InertiaLink}
+                            href="/"
                             marginTop={"2.8rem"}
                             height={["2rem", "2.6rem"]}
                             bgColor={"#352919"}
@@ -135,6 +165,7 @@ const Login: React.FC = () => {
                     alignItems={"center"}
                     pt={["2rem", "4rem"]}
                     pb={["3rem"]}
+                    px={"4rem"}
                 >
                     <Show above="md">
                         <Text
@@ -152,166 +183,93 @@ const Login: React.FC = () => {
                         </Text>
                     </Show>
 
-                    <Stack justifyContent={"center"} alignItems={"center"}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Stack gap={"1.3rem"}>
-                                <FormControl isInvalid={!!errors.username}>
-                                    <Stack alignItems={"center"}>
-                                        <Stack
-                                            align={"start"}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                            gap={["0"]}
-                                        >
-                                            <FormLabel
-                                                htmlFor="username"
-                                                fontWeight={"bold"}
-                                                fontSize={["1rem"]}
-                                            >
-                                                Username
-                                            </FormLabel>
-                                        </Stack>
-                                        <Input
-                                            id="username"
-                                            bgColor={"#F8F8F8"}
-                                            borderColor={"#352919"}
-                                            _hover={"#352919"}
-                                            focusBorderColor="#352919"
-                                            marginBottom={[
-                                                "0.2",
-                                                "0.2rem",
-                                                "2.8rem",
-                                            ]}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                            {...register("username", {
-                                                required:
-                                                    "Username is required",
-                                                minLength: {
-                                                    value: 4,
-                                                    message:
-                                                        "Username at least 4 characters",
-                                                },
-                                            })}
-                                        />
-                                        <FormErrorMessage fontSize={"0.9rem"}>
-                                            {errors.username &&
-                                                errors.username.message}
-                                        </FormErrorMessage>
-                                    </Stack>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.password}>
-                                    <Stack alignItems={"center"}>
-                                        <Stack
-                                            align={"start"}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                        >
-                                            <FormLabel
-                                                htmlFor="password"
-                                                fontWeight={"bold"}
-                                            >
-                                                Password
-                                            </FormLabel>
-                                        </Stack>
-                                        <Input
-                                            id="password"
-                                            bgColor={"#F8F8F8"}
-                                            borderColor={"#352919"}
-                                            _hover={"#352919"}
-                                            focusBorderColor="#352919"
-                                            marginBottom={[
-                                                "2rem",
-                                                "2rem",
-                                                "3.5rem",
-                                            ]}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                            {...register("password", {
-                                                required:
-                                                    "Password is required",
-                                                minLength: {
-                                                    value: 6,
-                                                    message:
-                                                        "Password at least 6 characters",
-                                                },
-                                            })}
-                                        />
-                                        <FormErrorMessage
-                                            fontSize={"0.9rem"}
-                                            m={"0"}
-                                            p={"0"}
-                                        >
-                                            {errors.password &&
-                                                errors.password.message}
-                                        </FormErrorMessage>
+                    <Stack
+                        as={"form"}
+                        onSubmit={handleSubmit(onSubmit)}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                        w={"full"}
+                        h={"full"}
+                        gap={"1rem"}
+                    >
+                        <FormControl isInvalid={!!errors.email}>
+                            <FormLabel
+                                htmlFor="username"
+                                fontWeight={"bold"}
+                                fontSize={["1rem"]}
+                            >
+                                Email
+                            </FormLabel>
+                            <Input
+                                id="email"
+                                bgColor={"#F8F8F8"}
+                                borderColor={"#352919"}
+                                _hover={"#352919"}
+                                focusBorderColor="#352919"
+                                type="email"
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                        message: "Invalid email address",
+                                    },
+                                })}
+                            />
+                            <FormErrorMessage fontSize={"0.9rem"}>
+                                {errors.email && errors.email.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <FormControl isInvalid={!!errors.password}>
+                            <FormLabel htmlFor="password" fontWeight={"bold"}>
+                                Password
+                            </FormLabel>
+                            <Input
+                                id="password"
+                                bgColor={"#F8F8F8"}
+                                borderColor={"#352919"}
+                                _hover={"#352919"}
+                                focusBorderColor="#352919"
+                                type="password"
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 6,
+                                        message:
+                                            "Password at least 6 characters",
+                                    },
+                                })}
+                            />
+                            <FormErrorMessage
+                                fontSize={"0.9rem"}
+                                m={"0"}
+                                p={"0"}
+                            >
+                                {errors.password && errors.password.message}
+                            </FormErrorMessage>
+                        </FormControl>
 
-                                        <Button
-                                            type="submit"
-                                            bgColor={"#352919"}
-                                            _hover={"#352919"}
-                                            color={"white"}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                        >
-                                            Sign In
-                                        </Button>
-                                        <Stack
-                                            justifyContent={"space-between"}
-                                            direction={"row"}
-                                            w={[
-                                                "140%",
-                                                "200%",
-                                                "160%",
-                                                "210%",
-                                                "290%",
-                                            ]}
-                                            color={"black"}
-                                            fontWeight={"bold"}
-                                            mt={"1rem"}
-                                        >
-                                            <Text
-                                                textDecoration={"underline"}
-                                                cursor={"pointer"}
-                                            >
-                                                Sign Up
-                                            </Text>
-                                            <Text
-                                                textDecoration={"underline"}
-                                                cursor={"pointer"}
-                                            >
-                                                Forgot Password
-                                            </Text>
-                                        </Stack>
-                                    </Stack>
-                                </FormControl>
-                            </Stack>
-                        </form>
+                        <Button
+                            type="submit"
+                            bgColor={"#352919"}
+                            _hover={"#352919"}
+                            color={"white"}
+                            w={"full"}
+                            mt={"2rem"}
+                        >
+                            Sign In
+                        </Button>
+                        <Text>
+                            Don't have an account?{" "}
+                            <Link
+                                as={InertiaLink}
+                                href="/register"
+                                textDecoration={"underline"}
+                                cursor={"pointer"}
+                                fontWeight={"bold"}
+                            >
+                                Sign Up
+                            </Link>
+                        </Text>
                     </Stack>
                 </Stack>
             </Stack>
