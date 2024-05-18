@@ -135,95 +135,120 @@ export default function History({
     });
 
     return (
-        <Stack
-            bgColor={"#FFF7E4"}
-            minH={"100vh"}
-            minW={"100vw"}
-            direction={"row"}
-        >
-            <Sidebar auth={auth}>
-                <Stack
-                    bgColor={"white"}
-                    shadow={"lg"}
-                    rounded={"xl"}
-                    flex={1}
-                    mt={"1rem"}
-                >
-                    <Stack p={"1rem"} w={"full"} align={"end"}>
-                        <Select
-                            value={transactionDateSelect}
-                            onChange={(event) =>
-                                setTransactionDateSelect(event.target.value)
-                            }
-                            w={"9rem"}
-                            rounded={"full"}
-                            bgColor={"#FFF7E4"}
-                        >
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </Select>
-                    </Stack>
-
-                    <DataTable colDefs={colDefs} data={filteredTransactions} />
-                    {/* MODAL START */}
-                    <Modal
-                        isCentered
-                        isOpen={!!modalState}
-                        onClose={() => setModalState(undefined)}
+        <>
+            <style>
+                {`
+                .css-o3ggst {
+                    padding-bottom: 6px !important;
+                }
+                .tss-hwdp7s-MUIDataTable-liveAnnounce {
+                    border: 0 !important;
+                    clip: rect(0 0 0 0) !important;
+                    height: 1px !important;
+                    margin: -1px !important;
+                    overflow: hidden !important;
+                    padding: 0 !important;
+                    position: relative !important;
+                    width: 1px !important;
+                }
+            `}
+            </style>
+            <Stack
+                bgColor={"#FFF7E4"}
+                minH={"100vh"}
+                minW={"100vw"}
+                direction={"row"}
+            >
+                <Sidebar auth={auth}>
+                    <Stack
+                        bgColor={"white"}
+                        shadow={"lg"}
+                        rounded={"xl"}
+                        flex={1}
+                        mt={"1rem"}
                     >
-                        <ModalOverlay
-                            bg="blackAlpha.300"
-                            backdropFilter="blur(10px)"
+                        <Stack p={"1rem"} w={"full"} align={"end"}>
+                            <Select
+                                value={transactionDateSelect}
+                                onChange={(event) =>
+                                    setTransactionDateSelect(event.target.value)
+                                }
+                                w={"9rem"}
+                                rounded={"full"}
+                                bgColor={"#FFF7E4"}
+                            >
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </Select>
+                        </Stack>
+
+                        <DataTable
+                            colDefs={colDefs}
+                            data={filteredTransactions}
                         />
+                        {/* MODAL START */}
+                        <Modal
+                            isCentered
+                            isOpen={!!modalState}
+                            onClose={() => setModalState(undefined)}
+                        >
+                            <ModalOverlay
+                                bg="blackAlpha.300"
+                                backdropFilter="blur(10px)"
+                            />
 
-                        <ModalContent>
-                            <ModalHeader>Delete</ModalHeader>
-                            <ModalCloseButton />
+                            <ModalContent>
+                                <ModalHeader>Delete</ModalHeader>
+                                <ModalCloseButton />
 
-                            <ModalBody>
-                                <Text>
-                                    Are you sure to delete{" "}
-                                    <b>
-                                        {modalState?.transaction.customer_name}
-                                    </b>{" "}
-                                    ?
-                                </Text>
-                            </ModalBody>
+                                <ModalBody>
+                                    <Text>
+                                        Are you sure to delete{" "}
+                                        <b>
+                                            {
+                                                modalState?.transaction
+                                                    .customer_name
+                                            }
+                                        </b>{" "}
+                                        ?
+                                    </Text>
+                                </ModalBody>
 
-                            <ModalFooter>
-                                <Button
-                                    colorScheme="red"
-                                    onClick={() => {
-                                        axios
-                                            .delete<ResponseModel>(
-                                                `/api/transaction/${modalState?.transaction.id}`
-                                            )
-                                            .then((res) => {
-                                                toast({
-                                                    title: "Success",
-                                                    description:
-                                                        res.data.message,
-                                                    status: "success",
-                                                    duration: 5000,
-                                                    isClosable: true,
+                                <ModalFooter>
+                                    <Button
+                                        colorScheme="red"
+                                        onClick={() => {
+                                            axios
+                                                .delete<ResponseModel>(
+                                                    `/api/transaction/${modalState?.transaction.id}`
+                                                )
+                                                .then((res) => {
+                                                    toast({
+                                                        title: "Success",
+                                                        description:
+                                                            res.data.message,
+                                                        status: "success",
+                                                        duration: 5000,
+                                                        isClosable: true,
+                                                    });
+                                                })
+                                                .catch(errorHandler)
+                                                .finally(() => {
+                                                    setModalState(undefined);
+                                                    router.reload();
                                                 });
-                                            })
-                                            .catch(errorHandler)
-                                            .finally(() => {
-                                                setModalState(undefined);
-                                                router.reload();
-                                            });
-                                    }}
-                                >
-                                    Delete
-                                </Button>
-                            </ModalFooter>
-                        </ModalContent>
-                    </Modal>
-                    {/* MODAL END */}
-                </Stack>
-            </Sidebar>
-        </Stack>
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+                        {/* MODAL END */}
+                    </Stack>
+                </Sidebar>
+            </Stack>
+        </>
     );
 }

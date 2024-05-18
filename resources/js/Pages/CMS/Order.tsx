@@ -61,6 +61,7 @@ export default function Order({
             w={"100vw"}
             direction={"row"}
             overflow={"scroll"}
+            mb={{ base: "15", sm: "15" }}
         >
             <Sidebar auth={auth}>
                 {step === 1 && (
@@ -261,6 +262,7 @@ export default function Order({
                                 w={"fit-content"}
                                 bgColor={"#352919"}
                                 color={"white"}
+                                onClick={() => setStep(1)}
                             >
                                 Back to Menu
                             </Button>
@@ -295,6 +297,7 @@ export default function Order({
                                         newCart[index].quantity = qty;
                                         setCart(newCart);
                                     }}
+                                    notes={item.notes}
                                 />
                             ))}
                         </Stack>

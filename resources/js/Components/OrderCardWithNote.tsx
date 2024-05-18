@@ -1,12 +1,16 @@
 import {
     Button,
     Heading,
+    Icon,
     Image,
     Input,
+    InputGroup,
+    InputLeftElement,
     Stack,
     Tag,
     Text,
 } from "@chakra-ui/react";
+import { MdNotes } from "react-icons/md";
 import { useState } from "react";
 
 type Menu = {
@@ -30,11 +34,13 @@ const OrderCardWithNote = ({
     onAdd,
     onNoteChange,
     qty,
+    notes,
 }: {
     menu: Menu;
     qty: number;
     onAdd: (qty: number) => void;
     onNoteChange: (note: string) => void;
+    notes: string;
 }) => {
     const [quantity, setQuantity] = useState<number>(qty);
 
@@ -59,12 +65,19 @@ const OrderCardWithNote = ({
                     rounded={"xl"}
                 />
                 <Stack
-                    direction={["column", "column", "row", "row", "row"]}
+                    direction={["column", "column", "column", "row", "row"]}
                     w={"full"}
-                    justify={"space-between"}
-                    align={"center"}
+                    justify={[
+                        "start",
+                        "start",
+                        "start",
+                        "space-between",
+                        "space-between",
+                    ]}
+                    align={["start", "start", "start", "center", "center"]}
+                    p={["1rem", "1rem", "1rem", "1rem", "1rem"]}
                 >
-                    <Stack>
+                    <Stack flex={1} w={"full"}>
                         <Tag
                             bgColor={"#D9D9D9"}
                             h={25}
@@ -82,6 +95,25 @@ const OrderCardWithNote = ({
                         >
                             {menu.name}
                         </Heading>
+                        <InputGroup>
+                            <InputLeftElement pointerEvents="none">
+                                <Icon
+                                    as={MdNotes}
+                                    color={"#35291950"}
+                                    fontSize={"1.5rem"}
+                                    pb={"0.3rem"}
+                                />
+                            </InputLeftElement>
+                            <Input
+                                w={["full", "full", "full", "75%", "75%"]}
+                                rounded={"full"}
+                                size={["sm", "sm", "xs", "sm", "sm"]}
+                                placeholder={"*Opsional | Contoh: sangat pedas"}
+                                onChange={(e) => onNoteChange(e.target.value)}
+                                defaultValue={notes}
+                                color={"#35291990"}
+                            ></Input>
+                        </InputGroup>
                     </Stack>
                     <Stack direction={"row"} gap={"4rem"}>
                         <Stack>
@@ -123,7 +155,7 @@ const OrderCardWithNote = ({
                         </Stack>
                         <Stack>
                             <Heading color={"#D59B70"} fontSize={"lg"}>
-                                {kFormatter(menu.price)}
+                                {kFormatter(menu.price * quantity)}
                             </Heading>
                         </Stack>
                     </Stack>
