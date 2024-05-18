@@ -9,6 +9,7 @@ import {
     Tooltip,
     Box,
     Heading,
+    Input,
 } from "@chakra-ui/react";
 import OrderCard from "@/Components/OrderCard";
 import { FaCartPlus } from "react-icons/fa";
@@ -248,58 +249,105 @@ export default function Order({
 
                 {step === 2 && (
                     <Stack
+                        direction={"row"}
+                        w={"full"}
                         flex={1}
+                        flexWrap={"wrap"}
                         bgColor={"white"}
                         rounded={"3xl"}
                         mt={"1rem"}
                         p={["1rem", "1rem", "1rem", "2rem", "2rem"]}
-                        gap={"1rem"}
+                        gap={"5rem"}
+                        mb={{ base: "3rem", md: 0 }}
+                        overflow={"scroll"}
                     >
-                        <Stack gap={"1rem"}>
-                            <Button
-                                leftIcon={<BiLeftArrowAlt />}
-                                rounded={"full"}
-                                w={"fit-content"}
-                                bgColor={"#352919"}
-                                color={"white"}
-                                onClick={() => setStep(1)}
-                            >
-                                Back to Menu
-                            </Button>
-                            <Heading size={"lg"}>Cart</Heading>
-                        </Stack>
-
                         <Stack>
-                            {cart.map((item) => (
-                                <OrderCardWithNote
-                                    key={item.id}
-                                    menu={
-                                        menus.find(
-                                            (menu) => menu.id === item.id
-                                        )!
-                                    }
-                                    qty={item.quantity}
-                                    onNoteChange={(note) => {
-                                        const index = cart.findIndex(
-                                            (cartItem) =>
-                                                cartItem.id === item.id
-                                        );
-                                        const newCart = [...cart];
-                                        newCart[index].notes = note;
-                                        setCart(newCart);
-                                    }}
-                                    onAdd={(qty) => {
-                                        const index = cart.findIndex(
-                                            (cartItem) =>
-                                                cartItem.id === item.id
-                                        );
-                                        const newCart = [...cart];
-                                        newCart[index].quantity = qty;
-                                        setCart(newCart);
-                                    }}
-                                    notes={item.notes}
+                            <Stack gap={"1rem"}>
+                                <Button
+                                    leftIcon={<BiLeftArrowAlt />}
+                                    rounded={"full"}
+                                    w={"fit-content"}
+                                    bgColor={"#352919"}
+                                    color={"white"}
+                                    onClick={() => setStep(1)}
+                                >
+                                    Back to Menu
+                                </Button>
+                                <Heading size={"lg"}>Cart</Heading>
+                            </Stack>
+
+                            <Stack>
+                                {cart.map((item) => (
+                                    <OrderCardWithNote
+                                        key={item.id}
+                                        menu={
+                                            menus.find(
+                                                (menu) => menu.id === item.id
+                                            )!
+                                        }
+                                        qty={item.quantity}
+                                        onNoteChange={(note) => {
+                                            const index = cart.findIndex(
+                                                (cartItem) =>
+                                                    cartItem.id === item.id
+                                            );
+                                            const newCart = [...cart];
+                                            newCart[index].notes = note;
+                                            setCart(newCart);
+                                        }}
+                                        onAdd={(qty) => {
+                                            const index = cart.findIndex(
+                                                (cartItem) =>
+                                                    cartItem.id === item.id
+                                            );
+                                            const newCart = [...cart];
+                                            newCart[index].quantity = qty;
+                                            setCart(newCart);
+                                        }}
+                                        notes={item.notes}
+                                    />
+                                ))}
+                            </Stack>
+                        </Stack>
+                        <Stack
+                            bgColor={"#f5f5f5"}
+                            flex={1}
+                            gap={15}
+                            h={"15rem"}
+                            p={8}
+                            rounded={"xl"}
+                            mt={{ base: 0, lg: 10 }}
+                        >
+                            <Stack>
+                                <Text color={"#352919"} fontWeight={"Bold"}>
+                                    Nama Pembeli
+                                </Text>
+                                <Input
+                                    placeholder={"* Wajib"}
+                                    rounded={"full"}
+                                    size={"sm"}
                                 />
-                            ))}
+                            </Stack>
+                            <Stack
+                                direction={"row"}
+                                gap={1}
+                                justifyContent={"space-between"}
+                                mt={2}
+                            >
+                                <Heading color={"#352919"} fontSize={"xl"}>
+                                    TOTAL
+                                </Heading>
+                                <Heading color={"#d59b70"} fontSize={"xl"}>
+                                    135K
+                                </Heading>
+                            </Stack>
+                            <Button
+                                bgColor={"#352919"}
+                                color={"#FFF7E4"}
+                                rounded={"full"}
+                            >
+                                Order
+                            </Button>
                         </Stack>
                     </Stack>
                 )}
