@@ -40,7 +40,7 @@ const OrderCardWithNote = ({
     qty: number;
     onAdd: (qty: number) => void;
     onNoteChange: (note: string) => void;
-    notes: string;
+    notes: string | undefined;
 }) => {
     const [quantity, setQuantity] = useState<number>(qty);
 
