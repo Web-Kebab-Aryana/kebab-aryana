@@ -60,6 +60,14 @@ export default function History({
         {
             name: "total",
             label: "Total Harga",
+            options: {
+                customBodyRender: (value: number) => {
+                    return new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                    }).format(value);
+                },
+            },
         },
         {
             name: "transaction_date",

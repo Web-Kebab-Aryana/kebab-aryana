@@ -10,13 +10,21 @@ import {
     Box,
     Heading,
     Input,
+    FormLabel,
+    FormControl,
+    FormErrorMessage,
+    useToast,
 } from "@chakra-ui/react";
 import OrderCard from "@/Components/OrderCard";
 import { FaCartPlus } from "react-icons/fa";
 import { useState } from "react";
-import { Link as InertiaLink } from "@inertiajs/react";
+import { Link as InertiaLink, router } from "@inertiajs/react";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import OrderCardWithNote from "@/Components/OrderCardWithNote";
+import { useForm } from "react-hook-form";
+import kFormatter from "@/Utils/kFormatter";
+import { ResponseModel, useToastErrorHandler } from "@/Hooks/useApi";
+import axios from "axios";
 
 type Menu = {
     id: number;
@@ -35,16 +43,28 @@ type Cart = {
 
 const categories = ["All Menu", "Kebab", "Nasi", "Snack", "Minuman"];
 
+type NameForm = {
+    customer_name: string;
+};
+
 export default function Order({
     auth,
     menus,
 }: PageProps & {
     menus: Menu[];
 }) {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<NameForm>();
+
+    const toast = useToast();
+    const errorHandler = useToastErrorHandler();
+
     const [cart, setCart] = useState<Cart[]>([]);
     const [selectedCategory, setSelectedCategory] =
         useState<string>("All Menu");
-
     const [step, setStep] = useState<number>(1);
 
     const filteredMenus = menus.filter(
@@ -52,8 +72,6 @@ export default function Order({
             selectedCategory === "All Menu" ||
             menu.category === selectedCategory
     );
-
-    console.log(cart);
 
     return (
         <Stack
@@ -261,7 +279,15 @@ export default function Order({
                         mb={{ base: "3rem", md: 0 }}
                         overflow={"scroll"}
                     >
-                        <Stack>
+                        <Stack
+                            w={[
+                                "full",
+                                "full",
+                                "full",
+                                "fit-content",
+                                "fit-content",
+                            ]}
+                        >
                             <Stack gap={"1rem"}>
                                 <Button
                                     leftIcon={<BiLeftArrowAlt />}
@@ -277,39 +303,87 @@ export default function Order({
                             </Stack>
 
                             <Stack>
-                                {cart.map((item) => (
-                                    <OrderCardWithNote
-                                        key={item.id}
-                                        menu={
-                                            menus.find(
-                                                (menu) => menu.id === item.id
-                                            )!
-                                        }
-                                        qty={item.quantity}
-                                        onNoteChange={(note) => {
-                                            const index = cart.findIndex(
-                                                (cartItem) =>
-                                                    cartItem.id === item.id
-                                            );
-                                            const newCart = [...cart];
-                                            newCart[index].notes = note;
-                                            setCart(newCart);
-                                        }}
-                                        onAdd={(qty) => {
-                                            const index = cart.findIndex(
-                                                (cartItem) =>
-                                                    cartItem.id === item.id
-                                            );
-                                            const newCart = [...cart];
-                                            newCart[index].quantity = qty;
-                                            setCart(newCart);
-                                        }}
-                                        notes={item.notes}
-                                    />
-                                ))}
+                                {cart.length > 0 ? (
+                                    cart.map((item) => (
+                                        <OrderCardWithNote
+                                            key={item.id}
+                                            menu={
+                                                menus.find(
+                                                    (menu) =>
+                                                        menu.id === item.id
+                                                )!
+                                            }
+                                            qty={item.quantity}
+                                            onNoteChange={(note) => {
+                                                const index = cart.findIndex(
+                                                    (cartItem) =>
+                                                        cartItem.id === item.id
+                                                );
+                                                const newCart = [...cart];
+                                                newCart[index].notes = note;
+                                                setCart(newCart);
+                                            }}
+                                            onDecrement={() => {
+                                                const index = cart.findIndex(
+                                                    (cartItem) =>
+                                                        cartItem.id === item.id
+                                                );
+                                                if (
+                                                    cart[index].quantity === 1
+                                                ) {
+                                                    const newCart = [...cart];
+                                                    newCart.splice(index, 1);
+                                                    setCart(newCart);
+                                                } else {
+                                                    const newCart = [...cart];
+                                                    newCart[
+                                                        index
+                                                    ].quantity -= 1;
+                                                    setCart(newCart);
+                                                }
+                                            }}
+                                            onIncrement={() => {
+                                                const index = cart.findIndex(
+                                                    (cartItem) =>
+                                                        cartItem.id === item.id
+                                                );
+                                                const newCart = [...cart];
+                                                newCart[index].quantity += 1;
+                                                setCart(newCart);
+                                            }}
+                                            notes={item.notes}
+                                        />
+                                    ))
+                                ) : (
+                                    <Text>Cart is Empty</Text>
+                                )}
                             </Stack>
                         </Stack>
                         <Stack
+                            as={"form"}
+                            onSubmit={handleSubmit((data) => {
+                                axios
+                                    .post<ResponseModel>("/api/orders/", {
+                                        customer_name: data.customer_name,
+                                        menus: cart.map((item) => ({
+                                            menu_id: item.id,
+                                            quantity: item.quantity,
+                                            notes: item.notes,
+                                        })),
+                                    })
+                                    .then((res) => {
+                                        toast({
+                                            title: "Order Berhasil",
+                                            description: res.data.message,
+                                            status: "success",
+                                            duration: 5000,
+                                            isClosable: true,
+                                        });
+
+                                        router.visit("/cms/history");
+                                    })
+                                    .catch(errorHandler);
+                            })}
                             bgColor={"#f5f5f5"}
                             flex={1}
                             gap={15}
@@ -318,16 +392,31 @@ export default function Order({
                             rounded={"xl"}
                             mt={{ base: 0, lg: 10 }}
                         >
-                            <Stack>
-                                <Text color={"#352919"} fontWeight={"Bold"}>
+                            <FormControl isInvalid={!!errors.customer_name}>
+                                <FormLabel
+                                    color={"#352919"}
+                                    fontWeight={"Bold"}
+                                >
                                     Nama Pembeli
-                                </Text>
+                                </FormLabel>
                                 <Input
+                                    {...register("customer_name", {
+                                        required: true,
+                                        minLength: {
+                                            value: 3,
+                                            message:
+                                                "Nama harus lebih dari 3 karakter",
+                                        },
+                                    })}
                                     placeholder={"* Wajib"}
                                     rounded={"full"}
                                     size={"sm"}
                                 />
-                            </Stack>
+                                <FormErrorMessage>
+                                    {errors.customer_name &&
+                                        errors.customer_name.message}
+                                </FormErrorMessage>
+                            </FormControl>
                             <Stack
                                 direction={"row"}
                                 gap={1}
@@ -338,10 +427,22 @@ export default function Order({
                                     TOTAL
                                 </Heading>
                                 <Heading color={"#d59b70"} fontSize={"xl"}>
-                                    135K
+                                    {kFormatter(
+                                        cart.reduce(
+                                            (acc, item) =>
+                                                acc +
+                                                item.quantity *
+                                                    menus.find(
+                                                        (menu) =>
+                                                            menu.id === item.id
+                                                    )!.price,
+                                            0
+                                        )
+                                    )}
                                 </Heading>
                             </Stack>
                             <Button
+                                type="submit"
                                 bgColor={"#352919"}
                                 color={"#FFF7E4"}
                                 rounded={"full"}

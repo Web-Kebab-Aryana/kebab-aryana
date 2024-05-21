@@ -1,5 +1,6 @@
 import { Button, Heading, Image, Stack, Tag, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import kFormatter from "@/Utils/kFormatter";
 
 type Menu = {
     id: number;
@@ -9,13 +10,6 @@ type Menu = {
     category: string;
     image: string;
 };
-
-function kFormatter(num: number) {
-    return Math.abs(num) > 999
-        ? // @ts-expect-error bacot
-          Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "K"
-        : Math.sign(num) * Math.abs(num);
-}
 
 const OrderCard = ({
     menu,

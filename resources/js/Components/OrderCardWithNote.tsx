@@ -11,7 +11,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { MdNotes } from "react-icons/md";
-import { useState } from "react";
+import kFormatter from "@/Utils/kFormatter";
 
 type Menu = {
     id: number;
@@ -22,28 +22,21 @@ type Menu = {
     image: string;
 };
 
-function kFormatter(num: number) {
-    return Math.abs(num) > 999
-        ? // @ts-expect-error bacot
-          Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "K"
-        : Math.sign(num) * Math.abs(num);
-}
-
 const OrderCardWithNote = ({
     menu,
-    onAdd,
     onNoteChange,
+    onDecrement,
+    onIncrement,
     qty,
     notes,
 }: {
     menu: Menu;
     qty: number;
-    onAdd: (qty: number) => void;
+    onDecrement: () => void;
+    onIncrement: () => void;
     onNoteChange: (note: string) => void;
     notes: string | undefined;
 }) => {
-    const [quantity, setQuantity] = useState<number>(qty);
-
     return (
         <>
             <Stack
@@ -128,24 +121,18 @@ const OrderCardWithNote = ({
                                     bgColor={"white"}
                                     border={"1px solid #35291950"}
                                     size={["xs", "xs", "xs", "sm", "sm"]}
-                                    onClick={() =>
-                                        setQuantity((qty) =>
-                                            qty === 0 ? 0 : qty - 1
-                                        )
-                                    }
+                                    onClick={onDecrement}
                                 >
                                     <Text fontWeight={"bold"} color={"#352919"}>
                                         -
                                     </Text>
                                 </Button>
-                                <Text color={"#352919"}>{quantity}</Text>
+                                <Text color={"#352919"}>{qty}</Text>
                                 <Button
                                     bgColor={"white"}
                                     border={"1px solid #35291950"}
                                     size={["xs", "xs", "xs", "sm", "sm"]}
-                                    onClick={() =>
-                                        setQuantity((qty) => qty + 1)
-                                    }
+                                    onClick={onIncrement}
                                 >
                                     <Text fontWeight={"bold"} color={"#352919"}>
                                         +
@@ -155,7 +142,7 @@ const OrderCardWithNote = ({
                         </Stack>
                         <Stack>
                             <Heading color={"#D59B70"} fontSize={"lg"}>
-                                {kFormatter(menu.price * quantity)}
+                                {kFormatter(menu.price * qty)}
                             </Heading>
                         </Stack>
                     </Stack>
