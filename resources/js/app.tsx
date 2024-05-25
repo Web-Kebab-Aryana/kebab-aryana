@@ -9,8 +9,8 @@ const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 const theme = extendTheme({
     fonts: {
-        body: "Inter, sans-serif",
-        heading: "Inter, sans-serif",
+        body: "Poppins, sans-serif",
+        heading: "Poppins, sans-serif",
         Poppins: "Poppins, sans-serif",
     },
 });
@@ -26,7 +26,7 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <App {...props} />
             </ChakraProvider>
         );
