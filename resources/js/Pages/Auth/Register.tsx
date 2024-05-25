@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import {
     Button,
     Image,
@@ -18,18 +18,22 @@ import { Link as InertiaLink, Head, router } from "@inertiajs/react";
 import { BsArrowUpRightCircle } from "react-icons/bs";
 import axios from "axios";
 import { useToastErrorHandler } from "@/Hooks/useApi";
+import { PageProps } from "@/types";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface IFormInput {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
+    recaptcha: string;
 }
 
-const Register: React.FC = () => {
+const Register = ({ recaptcha_site_key }: PageProps) => {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
         watch,
     } = useForm<IFormInput>();
@@ -312,6 +316,30 @@ const Register: React.FC = () => {
                                     errors.password_confirmation.message}
                             </FormErrorMessage>
                         </FormControl>
+
+                        <FormControl isInvalid={!!errors.recaptcha}>
+                            <Controller
+                                control={control}
+                                name="recaptcha"
+                                rules={{
+                                    required: "Recaptcha is required",
+                                }}
+                                render={({ field }) => (
+                                    <ReCAPTCHA
+                                        sitekey={recaptcha_site_key}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                            <FormErrorMessage
+                                fontSize={"0.9rem"}
+                                m={"0"}
+                                p={"0"}
+                            >
+                                {errors.recaptcha && errors.recaptcha.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
                         <Button
                             type="submit"
                             bgColor={"#352919"}

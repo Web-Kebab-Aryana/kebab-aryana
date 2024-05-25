@@ -24,12 +24,12 @@ import { BiSolidEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { register } from "module";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResponseModel, useToastErrorHandler } from "@/Hooks/useApi";
 import axios from "axios";
 import { router } from "@inertiajs/react";
+import kFormatter from "@/Utils/kFormatter";
 
 type MenuData = {
     id: number;
@@ -44,13 +44,6 @@ type ModalState = {
     menu?: MenuData;
     mode: "delete" | "edit";
 };
-
-function kFormatter(num: number) {
-    return Math.abs(num) > 999
-        ? // @ts-expect-error bacot
-          Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "K"
-        : Math.sign(num) * Math.abs(num);
-}
 
 const menuSchema = z.object({
     name: z.string({ required_error: "Title is required" }),

@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+
+    public function index()
+    {
+        $menus = Menu::all();
+        return Inertia::render('CMS/Order', [
+            'menus' => $menus
+        ]);
+    }
 
     // !notes: buat frontend ini contoh buat ambil order dengan id
     public function view($id)

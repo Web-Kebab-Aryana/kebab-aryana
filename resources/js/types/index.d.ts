@@ -13,4 +13,5 @@ export type PageProps<
     auth: {
         user: User;
     };
+    recaptcha_site_key: string;
 };

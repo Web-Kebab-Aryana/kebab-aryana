@@ -30,6 +30,7 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::middleware(['auth', 'isVerified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -42,11 +43,11 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
             return Inertia::render('CMS/Dashboard');
         });
 
-        Route::get('/history', function () {
-            return Inertia::render('CMS/History');
-        });
+        Route::get('/history', [TransactionHistoryController::class, 'view']);
 
         Route::get("/edit", [ContentController::class, 'index']);
+
+        Route::get("/order", [OrderController::class, 'index']);
     });
 
     // page Client

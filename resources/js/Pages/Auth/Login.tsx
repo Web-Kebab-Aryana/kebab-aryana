@@ -17,14 +17,17 @@ import { Link as InertiaLink, Head, router } from "@inertiajs/react";
 import { useEffect } from "react";
 import { useToastErrorHandler } from "@/Hooks/useApi";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
+import { PageProps } from "@/types";
 
 interface IFormInput {
     email: string;
     password: string;
     remember: boolean;
+    recaptcha: string;
 }
 
-const Login = () => {
+const Login = ({ recaptcha_site_key }: PageProps) => {
     const {
         register,
         handleSubmit,
@@ -247,6 +250,29 @@ const Login = () => {
                                 p={"0"}
                             >
                                 {errors.password && errors.password.message}
+                            </FormErrorMessage>
+                        </FormControl>
+
+                        <FormControl isInvalid={!!errors.recaptcha}>
+                            <Controller
+                                control={control}
+                                name="recaptcha"
+                                rules={{
+                                    required: "Recaptcha is required",
+                                }}
+                                render={({ field }) => (
+                                    <ReCAPTCHA
+                                        sitekey={recaptcha_site_key}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                            <FormErrorMessage
+                                fontSize={"0.9rem"}
+                                m={"0"}
+                                p={"0"}
+                            >
+                                {errors.recaptcha && errors.recaptcha.message}
                             </FormErrorMessage>
                         </FormControl>
 

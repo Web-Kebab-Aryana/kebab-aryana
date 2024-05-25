@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-
+use Inertia\Inertia;
 
 class TransactionHistoryController extends Controller
 {
     // bikin buat selectable date nya, jadi bisa di filter by Day, Week, Month, Year
     public function view()
     {
-        $orders = Order::all();
+        $orders = Order::all()->sortByDesc('created_at');
         if (!$orders) {
             return response()->json([
                 'message' => 'Order not found',
@@ -21,12 +21,12 @@ class TransactionHistoryController extends Controller
         $transactions = [];
 
         foreach ($orders as $order) {
-            $total = $order->orderDetails->sum(function($orderDetail){
+            $total = $order->orderDetails->sum(function ($orderDetail) {
                 return $orderDetail->menu->price * $orderDetail->quantity;
             });
 
             $transaction = [
-                'id'=> $order->id,
+                'id' => $order->id,
                 'customer_name' => $order->customer_name,
                 'total' => $total,
                 'transaction_date' => $order->created_at
@@ -35,7 +35,9 @@ class TransactionHistoryController extends Controller
             $transactions[] = $transaction;
         }
 
-        return $transactions;
+        return Inertia::render('CMS/History', [
+            'transactions' => $transactions
+        ]);
     }
 
     public function viewById($id)
@@ -77,5 +79,5 @@ class TransactionHistoryController extends Controller
         return response()->json([
             'message' => 'Order deleted',
         ]);
-    } 
+    }
 }
