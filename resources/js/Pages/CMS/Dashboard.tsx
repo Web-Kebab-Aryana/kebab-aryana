@@ -376,8 +376,6 @@ export default function Dashboard({ auth }: PageProps) {
                                         h={"full"}
                                         borderRadius={15}
                                         borderWidth={2}
-                                        // flex={1} // Membuat stack ini mengambil ruang yang tersisa
-                                        // overflow={"hidden"} // Mengatur overflow untuk konten dalam stack ini
                                     >
                                         <Stack flex={1} overflow={"hidden"}>
                                             <Chart
