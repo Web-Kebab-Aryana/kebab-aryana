@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionHistoryController;
+use App\Http\Controllers\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,9 +40,7 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
 
     // page CMS
     Route::prefix('cms')->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('CMS/Dashboard');
-        });
+        Route::get('/', [StatisticController::class, 'index']);
 
         Route::get('/history', [TransactionHistoryController::class, 'view']);
 

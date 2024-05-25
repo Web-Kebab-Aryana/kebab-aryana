@@ -1,5 +1,3 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import Sidebar from "@/Components/Sidebar";
 import { Show, Stack, Text, Image, Button, Box, Hide } from "@chakra-ui/react";
@@ -7,49 +5,56 @@ import Chart from "react-apexcharts";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import kFormatter from "@/Utils/kFormatter";
+import { Link } from "@inertiajs/react";
 
-export default function Dashboard({ auth }: PageProps) {
+type TransactionHistory = {
+    id: number;
+    customer_name: string;
+    total: number;
+    transaction_date: string;
+};
+
+type Statistic = {
+    transactions: TransactionHistory[];
+    cards: {
+        revenueBulanan: number;
+        revenueHarian: number;
+        totalMenu: number;
+    };
+    barPlot: {
+        totalOrderBulanan: number;
+        totalOrderHarian: number;
+        totalMenuTerjual: number;
+    };
+};
+
+export default function Dashboard({
+    auth,
+    transactions,
+    cards,
+    barPlot,
+}: PageProps & Statistic) {
+    const formatter = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+    });
+
     const cardData = [
         {
             image: "/images/chartIcon.svg",
-            title: "Total Revenue",
-            value: "Rp 1.000.000",
+            title: "Daily Revenue",
+            value: formatter.format(cards.revenueHarian),
         },
         {
             image: "/images/chartIcon.svg",
-            title: "Total Revenue",
-            value: "Rp 1.000.000",
+            title: "Monthly Revenue",
+            value: formatter.format(cards.revenueBulanan),
         },
         {
             image: "/images/chartIcon.svg",
-            title: "Total Revenue",
-            value: "Rp 1.000.000",
-        },
-        {
-            image: "/images/chartIcon.svg",
-            title: "Total Revenue",
-            value: "Rp 1.000.000",
-        },
-    ];
-
-    const transactionData = [
-        {
-            kode: "#1212",
-            price: "80K",
-            name: "Pak Vinsen",
-            date: "20-2-2024",
-        },
-        {
-            kode: "#1212",
-            price: "80K",
-            name: "Pak Vinsen",
-            date: "20-2-2024",
-        },
-        {
-            kode: "#1212",
-            price: "80K",
-            name: "Pak Vinsen",
-            date: "20-2-2024",
+            title: "Daily Menu Sold",
+            value: cards.totalMenu,
         },
     ];
 
@@ -68,12 +73,7 @@ export default function Dashboard({ auth }: PageProps) {
             id: "basic-bar",
         },
         xaxis: {
-            categories: [
-                "Total Revenue",
-                "Total Revenue",
-                "Total Revenue",
-                "Total Revenue",
-            ],
+            categories: ["Monthly", "Daily", "Menus Sold"],
         },
         plotOptions: {
             bar: {
@@ -97,7 +97,7 @@ export default function Dashboard({ auth }: PageProps) {
     const series = [
         {
             name: "Jumlah Peserta",
-            data: [100, 20, 50, 30],
+            data: [100, 20, 50],
         },
     ];
 
@@ -108,13 +108,22 @@ export default function Dashboard({ auth }: PageProps) {
                 minW={"100vw"}
                 minH={"100vh"}
                 direction={"row"}
+                overflow={"scroll"}
             >
                 <Sidebar auth={auth}>
                     <Show above={"md"}>
-                        <Stack overflow={"hidden"}>
+                        <Stack
+                            overflow={"hidden"}
+                            overflowY={"scroll"}
+                            css={{
+                                "::-webkit-scrollbar": {
+                                    display: "none",
+                                },
+                            }}
+                        >
                             {/* GREETING TEXT START */}
                             <Text fontSize={"1.5rem"} mt={8} mb={2}>
-                                Shalom, <b>Muhammad</b>
+                                Shalom, <b>{auth.user.name}</b>
                                 🥙
                             </Text>
                             {/* GREETING TEXT END */}
@@ -124,7 +133,8 @@ export default function Dashboard({ auth }: PageProps) {
                                 direction={"row"}
                                 spacing={6}
                                 overflowX={"auto"}
-                                h={"150px"}
+                                // h={"150px"}
+                                minH={"120px"}
                                 // bgColor={"red"}
                                 // mb={8}
                             >
@@ -246,11 +256,11 @@ export default function Dashboard({ auth }: PageProps) {
                                                 },
                                             }}
                                         >
-                                            {transactionData.map((card) => (
+                                            {transactions.map((card) => (
                                                 <>
                                                     <Stack>
                                                         <Stack
-                                                            key={card.kode}
+                                                            key={card.id}
                                                             direction={"row"}
                                                             justifyContent={
                                                                 "space-between"
@@ -269,7 +279,7 @@ export default function Dashboard({ auth }: PageProps) {
                                                                     "semibold"
                                                                 }
                                                             >
-                                                                #1212
+                                                                #{card.id}
                                                             </Box>
                                                             <Box
                                                                 bgColor={
@@ -287,7 +297,9 @@ export default function Dashboard({ auth }: PageProps) {
                                                                     "#3DB776"
                                                                 }
                                                             >
-                                                                80K
+                                                                {kFormatter(
+                                                                    card.total
+                                                                )}
                                                             </Box>
                                                         </Stack>
 
@@ -305,7 +317,9 @@ export default function Dashboard({ auth }: PageProps) {
                                                                     "semibold"
                                                                 }
                                                             >
-                                                                Pak Vinsen
+                                                                {
+                                                                    card.customer_name
+                                                                }
                                                             </Text>
                                                             <Text
                                                                 borderRadius={
@@ -316,7 +330,11 @@ export default function Dashboard({ auth }: PageProps) {
                                                                 }
                                                                 opacity={"50%"}
                                                             >
-                                                                20-2-2024
+                                                                {new Date(
+                                                                    card.transaction_date
+                                                                ).toLocaleDateString(
+                                                                    "id-ID"
+                                                                )}
                                                             </Text>
                                                         </Stack>
                                                     </Stack>
@@ -326,7 +344,12 @@ export default function Dashboard({ auth }: PageProps) {
                                     </Stack>
 
                                     <Stack>
-                                        <Button p={10} borderRadius={"2xl"}>
+                                        <Button
+                                            as={Link}
+                                            href="/cms/history"
+                                            p={10}
+                                            borderRadius={"2xl"}
+                                        >
                                             <Stack direction={"column"}>
                                                 <Text fontSize={"1.3rem"}>
                                                     View All
@@ -501,11 +524,11 @@ export default function Dashboard({ auth }: PageProps) {
                                                     },
                                                 }}
                                             >
-                                                {transactionData.map((card) => (
+                                                {transactions.map((card) => (
                                                     <>
                                                         <Stack>
                                                             <Stack
-                                                                key={card.kode}
+                                                                key={card.id}
                                                                 direction={
                                                                     "row"
                                                                 }
@@ -526,7 +549,7 @@ export default function Dashboard({ auth }: PageProps) {
                                                                         "semibold"
                                                                     }
                                                                 >
-                                                                    #1212
+                                                                    #{card.id}
                                                                 </Box>
                                                                 <Box
                                                                     bgColor={
@@ -544,7 +567,9 @@ export default function Dashboard({ auth }: PageProps) {
                                                                         "#3DB776"
                                                                     }
                                                                 >
-                                                                    80K
+                                                                    {kFormatter(
+                                                                        card.total
+                                                                    )}
                                                                 </Box>
                                                             </Stack>
 
@@ -564,7 +589,9 @@ export default function Dashboard({ auth }: PageProps) {
                                                                         "semibold"
                                                                     }
                                                                 >
-                                                                    Pak Vinsen
+                                                                    {
+                                                                        card.customer_name
+                                                                    }
                                                                 </Text>
                                                                 <Text
                                                                     borderRadius={
@@ -577,7 +604,11 @@ export default function Dashboard({ auth }: PageProps) {
                                                                         "50%"
                                                                     }
                                                                 >
-                                                                    20-2-2024
+                                                                    {new Date(
+                                                                        card.transaction_date
+                                                                    ).toLocaleDateString(
+                                                                        "id-ID"
+                                                                    )}
                                                                 </Text>
                                                             </Stack>
                                                         </Stack>
@@ -588,6 +619,8 @@ export default function Dashboard({ auth }: PageProps) {
 
                                             <Stack>
                                                 <Button
+                                                    as={Link}
+                                                    href="/cms/history"
                                                     p={8}
                                                     borderRadius={"2xl"}
                                                     mt={4}

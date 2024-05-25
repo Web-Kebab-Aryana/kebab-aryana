@@ -86,7 +86,6 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ children, auth }) => {
                 gap={0}
                 direction={"row"}
                 overflowX={"hidden"}
-                overflowY={"hidden"}
             >
                 <Stack
                     w={["20rem", "20rem", "15rem", "20rem"]}
