@@ -53,6 +53,7 @@ export default function Dashboard({ auth }: PageProps) {
         },
     ];
 
+    // untuk react slick
     const settings = {
         dots: true,
         infinite: true,
@@ -102,12 +103,17 @@ export default function Dashboard({ auth }: PageProps) {
 
     return (
         <>
-            <Stack bgColor={"#FFF7E4"} h={"full"} w={"100vw"} direction={"row"}>
+            <Stack
+                bgColor={"#FFF7E4"}
+                minW={"100vw"}
+                minH={"100vh"}
+                direction={"row"}
+            >
                 <Sidebar auth={auth}>
                     <Show above={"md"}>
-                        <Stack overflow={"hidden"} spacing={8} flex={1}>
+                        <Stack overflow={"hidden"}>
                             {/* GREETING TEXT START */}
-                            <Text fontSize={"1.5rem"} mt={10}>
+                            <Text fontSize={"1.5rem"} mt={8} mb={2}>
                                 Shalom, <b>Muhammad</b>
                                 🥙
                             </Text>
@@ -116,9 +122,11 @@ export default function Dashboard({ auth }: PageProps) {
                             {/* CARD STATISTIC START */}
                             <Stack
                                 direction={"row"}
-                                spacing={8}
-                                overflow={"auto"}
-                                // justifyContent={"space-between"}
+                                spacing={6}
+                                overflowX={"auto"}
+                                h={"150px"}
+                                // bgColor={"red"}
+                                // mb={8}
                             >
                                 {cardData.map((card) => (
                                     <Stack
@@ -132,8 +140,7 @@ export default function Dashboard({ auth }: PageProps) {
                                         <Stack
                                             direction="row"
                                             gap={4}
-                                            w="300px"
-                                            h="150px"
+                                            w="280px"
                                             alignItems="center"
                                             justifyContent="center"
                                         >
@@ -160,7 +167,7 @@ export default function Dashboard({ auth }: PageProps) {
                             </Stack>
                             {/* CARD STATISTIC END */}
 
-                            <Stack direction={"row"} gap={8} h={"full"}>
+                            <Stack direction={"row"} gap={8} h={"full"} mt={2}>
                                 {/* CHART START */}
                                 <Stack
                                     bgColor={"white"}
@@ -336,184 +343,276 @@ export default function Dashboard({ auth }: PageProps) {
                         </Stack>
                     </Show>
 
-                    <Hide above={"md"}>
-                        <Stack
-                            h={"100vh"}
-                            overflow={"auto"}
-                            spacing={8}
-                            overscrollY={"auto"}
-                            // direction={"column"}
-                        >
-                            {/* GREETING TEXT START */}
-                            <Text fontSize={"1.2rem"} mt={6}>
-                                Shalom, <b>Muhammad</b>
-                                🥙
-                            </Text>
-                            {/* GREETING TEXT END */}
-
-                            {/* CHART START */}
+                    <Stack alignItems={"center"}>
+                        <Hide above={"md"}>
                             <Stack
-                                bgColor={"white"}
-                                h={"full"}
-                                borderRadius={"3xl"}
-                                boxShadow="0 4px 8px rgba(0, 0, 0, 0.05)"
-                                p={6}
+                                overflow={"hidden"}
+                                w={"80vw"}
+                                // alignItems={"center"}
+                                // justifyItems={"center"}
+                                // justifyContent={"center"}
                             >
                                 <Stack
-                                    direction={"column"}
-                                    w={"full"}
-                                    h={"full"}
+                                    h={"100vh"}
+                                    spacing={8}
+                                    overscrollY={"auto"}
+                                    // justifyContent={"center"}
+                                    // justifyItems={"center"}
+                                    // alignItems={"center"}
                                 >
-                                    <Text
-                                        fontSize={"1.5rem"}
-                                        fontWeight={"semibold"}
-                                    >
-                                        Chart
+                                    {/* GREETING TEXT START */}
+                                    <Text fontSize={"1.2rem"} mt={6}>
+                                        Shalom, <b>Muhammad</b>
+                                        🥙
                                     </Text>
+                                    {/* GREETING TEXT END */}
 
+                                    {/* CARD REACT SLICK START */}
+                                    <Stack mt={2}>
+                                        <Slider {...settings}>
+                                            {cardData.map((card, index) => (
+                                                <Stack key={index} px={2}>
+                                                    <Stack
+                                                        key={card.title}
+                                                        bgColor="white"
+                                                        borderRadius="3xl"
+                                                        // boxShadow="0 4px 8px rgba(0, 0, 0, 0.05)"
+                                                        // alignContent="center"
+                                                        justifyContent="center"
+                                                    >
+                                                        <Stack
+                                                            direction="row"
+                                                            gap={4}
+                                                            // w="300px"
+                                                            h={"100px"}
+                                                            alignItems="center"
+                                                            justifyContent="center"
+                                                        >
+                                                            <Stack>
+                                                                <Image
+                                                                    w="4.5rem"
+                                                                    src={
+                                                                        card.image
+                                                                    }
+                                                                />
+                                                            </Stack>
+                                                            <Stack>
+                                                                <Text fontWeight="medium">
+                                                                    {card.title}
+                                                                </Text>
+                                                                <Text
+                                                                    fontSize="1.2rem"
+                                                                    fontWeight="bold"
+                                                                >
+                                                                    {card.value}
+                                                                </Text>
+                                                            </Stack>
+                                                        </Stack>
+                                                    </Stack>
+                                                </Stack>
+                                            ))}
+                                        </Slider>
+                                    </Stack>
+                                    {/* CARD REACT SLICK END */}
+
+                                    {/* CHART START */}
                                     <Stack
+                                        bgColor={"white"}
+                                        h={"full"}
+                                        borderRadius={"3xl"}
+                                        boxShadow="0 4px 8px rgba(0, 0, 0, 0.05)"
+                                        p={6}
+                                    >
+                                        <Stack
+                                            direction={"column"}
+                                            w={"full"}
+                                            h={"full"}
+                                        >
+                                            <Text
+                                                fontSize={"1.5rem"}
+                                                fontWeight={"semibold"}
+                                            >
+                                                Chart
+                                            </Text>
+
+                                            <Stack
+                                                w={"full"}
+                                                h={"full"}
+                                                borderRadius={15}
+                                                borderWidth={2}
+                                            >
+                                                <Stack
+                                                    flex={1}
+                                                    overflow={"hidden"}
+                                                    h={"full"}
+                                                >
+                                                    <Chart
+                                                        options={options}
+                                                        series={series}
+                                                        type="bar"
+                                                        width="100%"
+                                                        height="100%"
+                                                    />
+                                                </Stack>
+                                            </Stack>
+                                        </Stack>
+                                    </Stack>
+                                    {/* CHART END */}
+
+                                    {/* TRANSACTION HISTORY START */}
+                                    <Stack
+                                        bgColor={"white"}
                                         w={"full"}
                                         h={"full"}
-                                        borderRadius={15}
-                                        borderWidth={2}
+                                        borderRadius={"2xl"}
+                                        p={6}
+                                        // overflow={"auto"}
+                                        flex={1}
+                                        justifyContent={"space-between"}
                                     >
-                                        <Stack flex={1} overflow={"hidden"}>
-                                            <Chart
-                                                options={options}
-                                                series={series}
-                                                type="bar"
-                                                width="100%"
-                                                height="80%"
-                                            />
+                                        <Stack
+                                            direction={"column"}
+                                            gap={0}
+                                            h={"300px"}
+                                        >
+                                            <Text
+                                                fontSize={"1.5rem"}
+                                                fontWeight={"semibold"}
+                                            >
+                                                Transaction
+                                            </Text>
+                                            <Text
+                                                fontSize={"1.2rem"}
+                                                fontWeight={"semibold"}
+                                                opacity={"50%"}
+                                            >
+                                                History
+                                            </Text>
+
+                                            <Stack
+                                                direction={"column"}
+                                                gap={6}
+                                                mt={5}
+                                                h={"250px"}
+                                                overflowY={"auto"}
+                                                css={{
+                                                    "::-webkit-scrollbar": {
+                                                        display: "none",
+                                                    },
+                                                }}
+                                            >
+                                                {transactionData.map((card) => (
+                                                    <>
+                                                        <Stack>
+                                                            <Stack
+                                                                key={card.kode}
+                                                                direction={
+                                                                    "row"
+                                                                }
+                                                                justifyContent={
+                                                                    "space-between"
+                                                                }
+                                                            >
+                                                                <Box
+                                                                    bgColor={
+                                                                        "#FAF2DF"
+                                                                    }
+                                                                    px={3}
+                                                                    py={2}
+                                                                    borderRadius={
+                                                                        "xl"
+                                                                    }
+                                                                    fontWeight={
+                                                                        "semibold"
+                                                                    }
+                                                                >
+                                                                    #1212
+                                                                </Box>
+                                                                <Box
+                                                                    bgColor={
+                                                                        "#E8FAF5"
+                                                                    }
+                                                                    px={3}
+                                                                    py={2}
+                                                                    borderRadius={
+                                                                        "xl"
+                                                                    }
+                                                                    fontWeight={
+                                                                        "semibold"
+                                                                    }
+                                                                    color={
+                                                                        "#3DB776"
+                                                                    }
+                                                                >
+                                                                    80K
+                                                                </Box>
+                                                            </Stack>
+
+                                                            <Stack
+                                                                direction={
+                                                                    "row"
+                                                                }
+                                                                justifyContent={
+                                                                    "space-between"
+                                                                }
+                                                            >
+                                                                <Text
+                                                                    borderRadius={
+                                                                        "xl"
+                                                                    }
+                                                                    fontWeight={
+                                                                        "semibold"
+                                                                    }
+                                                                >
+                                                                    Pak Vinsen
+                                                                </Text>
+                                                                <Text
+                                                                    borderRadius={
+                                                                        "xl"
+                                                                    }
+                                                                    fontWeight={
+                                                                        "semibold"
+                                                                    }
+                                                                    opacity={
+                                                                        "50%"
+                                                                    }
+                                                                >
+                                                                    20-2-2024
+                                                                </Text>
+                                                            </Stack>
+                                                        </Stack>
+                                                    </>
+                                                ))}
+                                            </Stack>
+                                            {/* TRANSACTION HISTORY END */}
+
+                                            <Stack>
+                                                <Button
+                                                    p={8}
+                                                    borderRadius={"2xl"}
+                                                    mt={4}
+                                                >
+                                                    <Stack
+                                                        direction={"column"}
+                                                        gap={0}
+                                                    >
+                                                        <Text
+                                                            fontSize={"1.3rem"}
+                                                        >
+                                                            View All
+                                                        </Text>
+                                                        <Text opacity={"50%"}>
+                                                            Transaction
+                                                        </Text>
+                                                    </Stack>
+                                                </Button>
+                                            </Stack>
                                         </Stack>
                                     </Stack>
                                 </Stack>
                             </Stack>
-                            {/* CHART END */}
-
-                            {/* TRANSACTION HISTORY START */}
-                            <Stack
-                                bgColor={"white"}
-                                w={"full"}
-                                h={"full"}
-                                borderRadius={"2xl"}
-                                p={6}
-                                // overflow={"auto"}
-                                flex={1}
-                                justifyContent={"space-between"}
-                            >
-                                <Stack direction={"column"} gap={0} h={"300px"}>
-                                    <Text
-                                        fontSize={"1.5rem"}
-                                        fontWeight={"bold"}
-                                    >
-                                        Transaction
-                                    </Text>
-                                    <Text
-                                        fontSize={"1.2rem"}
-                                        fontWeight={"semibold"}
-                                        opacity={"50%"}
-                                    >
-                                        History
-                                    </Text>
-
-                                    <Stack
-                                        direction={"column"}
-                                        gap={6}
-                                        mt={5}
-                                        h={"250px"}
-                                        overflowY={"auto"}
-                                        css={{
-                                            "::-webkit-scrollbar": {
-                                                display: "none",
-                                            },
-                                        }}
-                                    >
-                                        {transactionData.map((card) => (
-                                            <>
-                                                <Stack>
-                                                    <Stack
-                                                        key={card.kode}
-                                                        direction={"row"}
-                                                        justifyContent={
-                                                            "space-between"
-                                                        }
-                                                    >
-                                                        <Box
-                                                            bgColor={"#FAF2DF"}
-                                                            px={3}
-                                                            py={2}
-                                                            borderRadius={"xl"}
-                                                            fontWeight={
-                                                                "semibold"
-                                                            }
-                                                        >
-                                                            #1212
-                                                        </Box>
-                                                        <Box
-                                                            bgColor={"#E8FAF5"}
-                                                            px={3}
-                                                            py={2}
-                                                            borderRadius={"xl"}
-                                                            fontWeight={
-                                                                "semibold"
-                                                            }
-                                                            color={"#3DB776"}
-                                                        >
-                                                            80K
-                                                        </Box>
-                                                    </Stack>
-
-                                                    <Stack
-                                                        direction={"row"}
-                                                        justifyContent={
-                                                            "space-between"
-                                                        }
-                                                    >
-                                                        <Text
-                                                            borderRadius={"xl"}
-                                                            fontWeight={
-                                                                "semibold"
-                                                            }
-                                                        >
-                                                            Pak Vinsen
-                                                        </Text>
-                                                        <Text
-                                                            borderRadius={"xl"}
-                                                            fontWeight={
-                                                                "semibold"
-                                                            }
-                                                            opacity={"50%"}
-                                                        >
-                                                            20-2-2024
-                                                        </Text>
-                                                    </Stack>
-                                                </Stack>
-                                            </>
-                                        ))}
-                                    </Stack>
-                                    {/* TRANSACTION HISTORY END */}
-
-                                    <Stack>
-                                        <Button
-                                            p={8}
-                                            borderRadius={"2xl"}
-                                            mt={4}
-                                        >
-                                            <Stack direction={"column"} gap={0}>
-                                                <Text fontSize={"1.3rem"}>
-                                                    View All
-                                                </Text>
-                                                <Text opacity={"50%"}>
-                                                    Transaction
-                                                </Text>
-                                            </Stack>
-                                        </Button>
-                                    </Stack>
-                                </Stack>
-                            </Stack>
-                        </Stack>
-                    </Hide>
+                        </Hide>
+                    </Stack>
                 </Sidebar>
             </Stack>
         </>
