@@ -25,7 +25,7 @@ type Statistic = {
     barPlot: {
         totalOrderBulanan: number;
         totalOrderHarian: number;
-        totalMenuTerjual: number;
+        totalMenuTerjualPerHari: number;
     };
 };
 
@@ -96,8 +96,12 @@ export default function Dashboard({
 
     const series = [
         {
-            name: "Jumlah Peserta",
-            data: [100, 20, 50],
+            name: "Jumlah",
+            data: [
+                barPlot.totalOrderBulanan,
+                barPlot.totalOrderHarian,
+                barPlot.totalMenuTerjualPerHari,
+            ],
         },
     ];
 
