@@ -18,20 +18,26 @@ import {
     Tag,
     Text,
     Textarea,
+    useToast,
 } from "@chakra-ui/react";
 import { BiSolidEdit } from "react-icons/bi";
 import { MdDeleteForever } from "react-icons/md";
-import { set, z } from "zod";
-import { useState } from "react";
+import { z } from "zod";
+import { useEffect, useState } from "react";
 import { register } from "module";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ResponseModel, useToastErrorHandler } from "@/Hooks/useApi";
+import axios from "axios";
+import { router } from "@inertiajs/react";
 
 type MenuData = {
-    title: string;
+    id: number;
+    name: string;
     description: string;
-    harga: number;
-    tag: string;
+    price: number;
+    category: string;
+    image: string;
 };
 
 type ModalState = {
@@ -39,21 +45,28 @@ type ModalState = {
     mode: "delete" | "edit";
 };
 
+function kFormatter(num: number) {
+    return Math.abs(num) > 999
+        ? // @ts-expect-error bacot
+          Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "K"
+        : Math.sign(num) * Math.abs(num);
+}
+
 const menuSchema = z.object({
-    title: z.string({ required_error: "Title is required" }),
+    name: z.string({ required_error: "Title is required" }),
     description: z.string({ required_error: "Description is required" }),
-    harga: z
+    price: z
         .number({
             required_error: "Price is required",
         })
-        .min(1, "Price must be more than 1K")
-        .max(100, "Price must be less than 100K"),
-    tag: z.string({ required_error: "Tag is required" }),
+        .min(1000, "Price must be more than 1K")
+        .max(100000, "Price must be less than 100K"),
+    category: z.string({ required_error: "Tag is required" }),
 });
 
 type StateDataFillable = z.infer<typeof menuSchema>;
 
-const MenuCard = () => {
+const MenuCard = ({ menu }: { menu: MenuData }) => {
     const {
         handleSubmit,
         register,
@@ -64,7 +77,16 @@ const MenuCard = () => {
         resolver: zodResolver(menuSchema),
     });
 
+    const toast = useToast();
+    const errorHandler = useToastErrorHandler();
+
     const [modalState, setModalState] = useState<ModalState | undefined>();
+
+    useEffect(() => {
+        if (modalState) {
+            reset(menu);
+        }
+    }, [modalState]);
 
     return (
         <>
@@ -81,6 +103,7 @@ const MenuCard = () => {
                 direction={{ base: "column", sm: "row" }}
                 minW={{ base: "100px", sm: "400px", lg: "450px" }}
                 shadow={"lg"}
+                m={"0.5rem"}
                 p={{ base: 5, sm: 0 }}
                 pb={{ base: 2, sm: 0 }}
             >
@@ -88,8 +111,8 @@ const MenuCard = () => {
                     w={{ base: "full", sm: "10rem" }}
                     h={{ base: "10rem", sm: "auto" }}
                     objectFit={"cover"}
-                    src="/images/kebabSpecial.png"
-                    alt="Kebab Aryana"
+                    src={`/storage/${menu.image}`}
+                    alt={menu.name}
                     m={["0rem", "0.75rem", "0.75rem", "0.75rem"]}
                     borderRadius={"xl"}
                 />
@@ -107,10 +130,10 @@ const MenuCard = () => {
                                 rounded={"full"}
                                 fontSize={"0.75rem"}
                             >
-                                Kebab
+                                {menu.category}
                             </Tag>
                             <Heading color={"#D59B70"} fontSize={"xl"}>
-                                35K
+                                {kFormatter(menu.price)}
                             </Heading>
                         </Stack>
                         {/* Name */}
@@ -118,15 +141,14 @@ const MenuCard = () => {
                             color={"#352919"}
                             fontSize={{ sm: "md", lg: "xl" }}
                         >
-                            Special Sandwich Ayam
+                            {menu.name}
                         </Heading>
                         <Text
                             color={"#35291950"}
                             fontSize={{ base: "xs", md: "sm", lg: "md" }}
                             h={{ base: "3.5rem", sm: "auto" }}
                         >
-                            Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit Ut et.
+                            {menu.description}
                         </Text>
                     </Stack>
                     {/* Buttons */}
@@ -144,13 +166,7 @@ const MenuCard = () => {
                             onClick={() =>
                                 setModalState({
                                     mode: "delete",
-                                    menu: {
-                                        title: "Special Sandwich Ayam",
-                                        description:
-                                            "Lorem ipsum dolor sit amet",
-                                        harga: 35000,
-                                        tag: "Kebab",
-                                    },
+                                    menu: menu,
                                 })
                             }
                         >
@@ -167,13 +183,7 @@ const MenuCard = () => {
                             onClick={() =>
                                 setModalState({
                                     mode: "edit",
-                                    menu: {
-                                        title: "Special Sandwich Ayam",
-                                        description:
-                                            "Lorem ipsum dolor sit amet",
-                                        harga: 35000,
-                                        tag: "Kebab",
-                                    },
+                                    menu: menu,
                                 })
                             }
                         >
@@ -214,46 +224,50 @@ const MenuCard = () => {
                             {modalState?.mode === "delete" && (
                                 <Text>
                                     Are you sure to delete{" "}
-                                    <b>{modalState.menu?.title}</b> ?{" "}
+                                    <b>{modalState.menu?.name}</b> ?{" "}
                                 </Text>
                             )}
 
                             {modalState?.mode === "edit" && (
                                 <form
                                     id="edit-data"
-                                    // onSubmit={handleSubmit((data) => {
-                                    //     api.post<ResponseModel>("/state", data)
-                                    //         .then((res) => {
-                                    //             toast({
-                                    //                 title: "Success",
-                                    //                 description: res.data.message,
-                                    //                 status: "success",
-                                    //             });
-                                    //         })
-                                    //         .catch(errorHandler)
-                                    //         .finally(() => {
-                                    //             stateData.mutate();
-                                    //             setModalState(undefined);
-                                    //         });
-                                    // })}
-                                    onSubmit={() => {
-                                        setModalState(undefined);
-                                    }}
+                                    onSubmit={handleSubmit((data) => {
+                                        axios
+                                            .post<ResponseModel>(
+                                                `/api/menus/${menu.id}?_method=PUT`,
+                                                data
+                                            )
+                                            .then((res) => {
+                                                toast({
+                                                    title: "Success",
+                                                    description:
+                                                        res.data.message,
+                                                    status: "success",
+                                                    duration: 5000,
+                                                    isClosable: true,
+                                                });
+                                            })
+                                            .catch(errorHandler)
+                                            .finally(() => {
+                                                setModalState(undefined);
+                                                router.reload();
+                                            });
+                                    })}
                                 >
                                     <Stack spacing={4}>
                                         {/* NAMA MAKANAN START */}
-                                        <FormControl isInvalid={!!errors.title}>
+                                        <FormControl isInvalid={!!errors.name}>
                                             <FormLabel>Food Name</FormLabel>
 
                                             <Input
                                                 placeholder="Nama Makanan"
-                                                {...register("title")}
+                                                {...register("name")}
                                                 type="text"
                                             />
 
                                             <FormErrorMessage>
-                                                {errors.title &&
-                                                    errors.title.message}
+                                                {errors.name &&
+                                                    errors.name.message}
                                             </FormErrorMessage>
                                         </FormControl>
                                         {/* NAMA MAKANAN END */}
@@ -279,25 +293,32 @@ const MenuCard = () => {
                                         {/* DESKRIPSI MAKANAN END */}
 
                                         {/* HARGA START */}
-                                        <FormControl isInvalid={!!errors.harga}>
+                                        <FormControl isInvalid={!!errors.price}>
                                             <FormLabel>Price</FormLabel>
 
                                             <Input
-                                                placeholder="Harga"
-                                                {...register("harga")}
+                                                placeholder="Price"
+                                                {...register("price", {
+                                                    valueAsNumber: true,
+                                                })}
                                                 type="number"
                                             />
 
                                             <FormErrorMessage>
-                                                {errors.harga &&
-                                                    errors.harga.message}
+                                                {errors.price &&
+                                                    errors.price.message}
                                             </FormErrorMessage>
                                         </FormControl>
 
                                         {/* TAG START */}
-                                        <FormControl isInvalid={!!errors.tag}>
-                                            <FormLabel>Tag</FormLabel>
-                                            <Select placeholder="Select Tag">
+                                        <FormControl
+                                            isInvalid={!!errors.category}
+                                        >
+                                            <FormLabel>Category</FormLabel>
+                                            <Select
+                                                {...register("category")}
+                                                placeholder="Select Category"
+                                            >
                                                 <option value="Kebab">
                                                     Kebab
                                                 </option>
@@ -312,8 +333,8 @@ const MenuCard = () => {
                                                 </option>
                                             </Select>
                                             <FormErrorMessage>
-                                                {errors.tag &&
-                                                    errors.tag.message}
+                                                {errors.category &&
+                                                    errors.category.message}
                                             </FormErrorMessage>
                                         </FormControl>
                                         {/* TAG END */}
@@ -326,25 +347,26 @@ const MenuCard = () => {
                             {modalState?.mode === "delete" && (
                                 <Button
                                     colorScheme="red"
-                                    // onClick={() => {
-                                    //     api.delete<ResponseModel>(
-                                    //         `/state/${modalState.state?.id}`
-                                    //     )
-                                    //         .then((res) => {
-                                    //             toast({
-                                    //                 title: "Deleted",
-                                    //                 description: res.data.message,
-                                    //                 status: "error",
-                                    //             });
-                                    //         })
-                                    //         .catch(errorHandler)
-                                    //         .finally(() => {
-                                    //             stateData.mutate();
-                                    //             setModalState(undefined);
-                                    //         });
-                                    // }}
                                     onClick={() => {
-                                        setModalState(undefined);
+                                        axios
+                                            .delete<ResponseModel>(
+                                                `/api/menus/${modalState.menu?.id}`
+                                            )
+                                            .then((res) => {
+                                                toast({
+                                                    title: "Success",
+                                                    description:
+                                                        res.data.message,
+                                                    status: "success",
+                                                    duration: 5000,
+                                                    isClosable: true,
+                                                });
+                                            })
+                                            .catch(errorHandler)
+                                            .finally(() => {
+                                                setModalState(undefined);
+                                                router.reload();
+                                            });
                                     }}
                                 >
                                     Delete
