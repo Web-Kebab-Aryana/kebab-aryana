@@ -3,21 +3,22 @@ import React from "react";
 
 const OurReview = () => {
     return (
-        <Stack bgGradient="linear(to-b, #FDD03950, #FFFFFF)">
+        <Stack bgGradient="linear(to-b, #FDD03975, #FFFFFF)" mb={10}>
             <Stack align={"center"} justify={"center"} my={10}>
                 <Heading color={"#E7464E"}>Our Reviews</Heading>
             </Stack>
             {/* BOX REVIEWS */}
+            {/* <Stack overflowX={"scroll"}> */}
             <Stack
                 direction={"row"}
                 justify={"center"}
                 gap={10}
-                // overflow={"auto"}
+                flexWrap={"wrap"}
             >
                 <Box
                     bgColor={"white"}
                     borderRadius={"3xl"}
-                    maxW={"25rem"}
+                    w={{ base: "18rem", md: "25rem" }}
                     maxH={"30rem"}
                     p={7}
                     boxShadow={"2xl"}
@@ -41,7 +42,7 @@ const OurReview = () => {
                 <Box
                     bgColor={"white"}
                     borderRadius={"3xl"}
-                    maxW={"25rem"}
+                    w={{ base: "18rem", md: "25rem" }}
                     maxH={"37.5rem"}
                     p={7}
                     boxShadow={"2xl"}
@@ -65,7 +66,7 @@ const OurReview = () => {
                 <Box
                     bgColor={"white"}
                     borderRadius={"3xl"}
-                    maxW={"25rem"}
+                    w={{ base: "18rem", md: "25rem" }}
                     maxH={"37.5rem"}
                     p={7}
                     boxShadow={"2xl"}
@@ -86,6 +87,7 @@ const OurReview = () => {
                     </Text>
                 </Box>
             </Stack>
+            {/* </Stack> */}
             <Stack
                 mt={20}
                 align={"center"}
@@ -96,16 +98,25 @@ const OurReview = () => {
                 <Stack
                     bgColor={"#FDD039"}
                     borderRadius={"3xl"}
-                    p={10}
-                    w={"75rem"}
-                    direction={"row"}
+                    p={{ base: 8, md: 10 }}
+                    w={["85%", "30rem", "40rem", "75rem"]}
+                    direction={{ base: "column", md: "row" }}
                     pos={"relative"}
                 >
                     <Stack flex={1}>
-                        <Heading fontWeight={"regular"}>
+                        <Heading
+                            fontWeight={"regular"}
+                            size={{ base: "medium", md: "xl" }}
+                        >
                             How does the kebab taste?
                         </Heading>
-                        <Heading fontWeight={"bold"}>Isn't it good?</Heading>
+                        <Heading
+                            fontWeight={"bold"}
+                            size={{ base: "lg", md: "xl" }}
+                            mb={{ base: 9, sm: 0 }}
+                        >
+                            Isn't it good?
+                        </Heading>
                         <Button
                             mt={8}
                             bgColor={"#E7464E"}
@@ -122,8 +133,10 @@ const OurReview = () => {
                         <Image
                             src="/profile/kebabReview.png"
                             pos={"absolute"}
-                            w={"35rem"}
-                            top={"-3.5rem"}
+                            w={["45%", "10rem", "25rem", "35rem", "35rem"]}
+                            top={["20%", "0", "-1.5rem", "-3.5rem"]}
+                            right={["-1rem", "0", "-3rem", "0"]}
+                            mt={{ base: 5, sm: 0 }}
                         ></Image>
                     </Stack>
                 </Stack>
