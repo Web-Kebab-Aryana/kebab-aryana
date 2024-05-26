@@ -3,91 +3,119 @@ import React from "react";
 
 const OurReview = () => {
     return (
-        <Stack bgGradient="linear(to-b, #FDD03975, #FFFFFF)" mb={10}>
+        <Stack
+            bgGradient="linear(to-b, #FDD03975, #FFFFFF)"
+            mb={10}
+            // alignItems={"center"}
+        >
             <Stack align={"center"} justify={"center"} my={10}>
                 <Heading color={"#E7464E"}>Our Reviews</Heading>
             </Stack>
             {/* BOX REVIEWS */}
-            {/* <Stack overflowX={"scroll"}> */}
-            <Stack
-                direction={"row"}
-                justify={"center"}
-                gap={10}
-                flexWrap={"wrap"}
-            >
-                <Box
-                    bgColor={"white"}
-                    borderRadius={"3xl"}
-                    w={{ base: "18rem", md: "25rem" }}
-                    maxH={"30rem"}
-                    p={7}
-                    boxShadow={"2xl"}
+            <Stack flex={1} alignItems={"center"}>
+                <Stack
+                    // flex={1}
+                    direction={"row"}
+                    // justify={"center"}
+                    justifyContent={"start"}
+                    gap={{ base: 5, sm: 10 }}
+                    // flexWrap={"wrap"}
+                    overflowX={{ base: "scroll", lg: "hidden" }}
+                    // bgColor={"red"}
+                    w={{ base: "75%", lg: "auto" }}
                 >
-                    {/* PROFILE */}
-                    <Stack direction={"row"} mb={6} align={"center"} gap={3}>
-                        <Image
-                            src="/profile/MaleC1.png"
-                            w={30}
-                            borderRadius={"full"}
-                        ></Image>
-                        <Text fontWeight={"bold"}>Aghitya Nugraha</Text>
+                    <Stack
+                        bgColor={"white"}
+                        borderRadius={"3xl"}
+                        minW={{ base: "12.5rem", md: "25rem" }}
+                        maxW={{ base: "15rem", md: "25rem" }}
+                        // maxH={"30rem"}
+                        p={7}
+                        // boxShadow={"2xl"}
+                    >
+                        {/* PROFILE */}
+                        <Stack
+                            direction={"row"}
+                            mb={6}
+                            align={"center"}
+                            gap={3}
+                        >
+                            <Image
+                                src="/profile/MaleC1.png"
+                                w={30}
+                                borderRadius={"full"}
+                            ></Image>
+                            <Text fontWeight={"bold"}>Aghitya Nugraha</Text>
+                        </Stack>
+                        {/* TEXT REVIEW */}
+                        <Text>
+                            This kebab was good, I will give you extra score
+                            another kebab is very bad i will deduct their score.
+                        </Text>
                     </Stack>
-                    {/* TEXT REVIEW */}
-                    <Text>
-                        This kebab was good, I will give you extra score another
-                        kebab is very bad i will deduct their score.
-                    </Text>
-                </Box>
 
-                <Box
-                    bgColor={"white"}
-                    borderRadius={"3xl"}
-                    w={{ base: "18rem", md: "25rem" }}
-                    maxH={"37.5rem"}
-                    p={7}
-                    boxShadow={"2xl"}
-                >
-                    {/* PROFILE */}
-                    <Stack direction={"row"} mb={6} align={"center"} gap={3}>
-                        <Image
-                            src="/profile/FemaleC1.png"
-                            w={30}
-                            borderRadius={"full"}
-                        ></Image>
-                        <Text fontWeight={"bold"}>Indah Basudara</Text>
+                    <Stack
+                        bgColor={"white"}
+                        borderRadius={"3xl"}
+                        minW={{ base: "12.5rem", md: "25rem" }}
+                        maxW={{ base: "15rem", md: "25rem" }}
+                        maxH={"37.5rem"}
+                        p={7}
+                        // boxShadow={"2xl"}
+                    >
+                        {/* PROFILE */}
+                        <Stack
+                            direction={"row"}
+                            mb={6}
+                            align={"center"}
+                            gap={3}
+                        >
+                            <Image
+                                src="/profile/FemaleC1.png"
+                                w={30}
+                                borderRadius={"full"}
+                            ></Image>
+                            <Text fontWeight={"bold"}>Indah Basudara</Text>
+                        </Stack>
+                        {/* TEXT REVIEW */}
+                        <Text>
+                            Kata Ilham, kebabnya enak banget, saya suka banget!
+                            Kalian wajib coba!
+                        </Text>
                     </Stack>
-                    {/* TEXT REVIEW */}
-                    <Text>
-                        Kata Ilham, kebabnya enak banget, saya suka banget!
-                        Kalian wajib coba!
-                    </Text>
-                </Box>
 
-                <Box
-                    bgColor={"white"}
-                    borderRadius={"3xl"}
-                    w={{ base: "18rem", md: "25rem" }}
-                    maxH={"37.5rem"}
-                    p={7}
-                    boxShadow={"2xl"}
-                >
-                    {/* PROFILE */}
-                    <Stack direction={"row"} mb={6} align={"center"} gap={3}>
-                        <Image
-                            src="/profile/FemaleC2.png"
-                            w={30}
-                            borderRadius={"full"}
-                        ></Image>
-                        <Text fontWeight={"bold"}>Marion Zigiro</Text>
+                    <Stack
+                        bgColor={"white"}
+                        borderRadius={"3xl"}
+                        minW={{ base: "12.5rem", md: "25rem" }}
+                        maxW={{ base: "15rem", md: "25rem" }}
+                        maxH={"37.5rem"}
+                        p={7}
+                        // boxShadow={"2xl"}
+                    >
+                        {/* PROFILE */}
+                        <Stack
+                            direction={"row"}
+                            mb={6}
+                            align={"center"}
+                            gap={3}
+                        >
+                            <Image
+                                src="/profile/FemaleC2.png"
+                                w={30}
+                                borderRadius={"full"}
+                            ></Image>
+                            <Text fontWeight={"bold"}>Marion Zigiro</Text>
+                        </Stack>
+                        {/* TEXT REVIEW */}
+                        <Text>
+                            Pokoknya enak banget, pasti bakal kesini lagi.
+                            Kebabnya top lah! Teman Malaysia saya aja suka
+                            banget!
+                        </Text>
                     </Stack>
-                    {/* TEXT REVIEW */}
-                    <Text>
-                        Pokoknya enak banget, pasti bakal kesini lagi. Kebabnya
-                        top lah! Teman Malaysia saya aja suka banget!
-                    </Text>
-                </Box>
+                </Stack>
             </Stack>
-            {/* </Stack> */}
             <Stack
                 mt={20}
                 align={"center"}
