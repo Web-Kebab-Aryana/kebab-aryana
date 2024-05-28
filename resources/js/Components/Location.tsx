@@ -10,6 +10,8 @@ import {
     Tag,
     TagLabel,
     TagLeftIcon,
+    Show,
+    Hide,
 } from "@chakra-ui/react";
 
 const Location = () => {
@@ -28,42 +30,85 @@ const Location = () => {
             >
                 {/* FIND OUR LOCATION START */}
                 <Stack direction={"column"} gap={10}>
-                    <Stack
-                        alignItems={"center"}
-                        justifyContent={"center"}
-                        gap={4}
-                        direction={"row"}
-                    >
-                        <Stack fontSize={"2rem"}>
-                            <Text fontWeight={"semibold"}>Find Our</Text>
-                        </Stack>
+                    <Show above="md">
                         <Stack
-                            bgColor={"#FDD039"}
-                            borderRadius={"full"}
-                            py={1}
-                            px={6}
                             alignItems={"center"}
                             justifyContent={"center"}
+                            gap={4}
                             direction={"row"}
                         >
-                            <SlLocationPin size={"1.5rem"} />
-                            <Text fontSize={"1.6rem"} fontWeight={"semibold"}>
-                                Location
-                            </Text>
+                            <Stack fontSize={"2rem"}>
+                                <Text fontWeight={"semibold"}>Find Our</Text>
+                            </Stack>
+
+                            <Stack
+                                bgColor={"#FDD039"}
+                                borderRadius={"full"}
+                                py={1}
+                                px={6}
+                                alignItems={"center"}
+                                justifyContent={"center"}
+                                direction={"row"}
+                            >
+                                <SlLocationPin size={"1.5rem"} />
+                                <Text
+                                    fontSize={"1.6rem"}
+                                    fontWeight={"semibold"}
+                                >
+                                    Location
+                                </Text>
+                            </Stack>
                         </Stack>
-                    </Stack>
+                    </Show>
+
+                    <Hide above="md">
+                        <Stack
+                            alignItems={"center"}
+                            justifyContent={"center"}
+                            gap={4}
+                            direction={"column"}
+                        >
+                            <Stack fontSize={"2rem"}>
+                                <Text fontWeight={"semibold"}>Find Our</Text>
+                            </Stack>
+
+                            <Stack
+                                bgColor={"#FDD039"}
+                                borderRadius={"full"}
+                                py={1}
+                                px={6}
+                                alignItems={"center"}
+                                justifyContent={"center"}
+                                direction={"row"}
+                            >
+                                <SlLocationPin size={"1.5rem"} />
+                                <Text
+                                    fontSize={"1.6rem"}
+                                    fontWeight={"semibold"}
+                                >
+                                    Location
+                                </Text>
+                            </Stack>
+                        </Stack>
+                    </Hide>
 
                     <Stack
-                        px={10}
                         justifyContent={"center"}
                         justifyItems={"center"}
                         flexDirection={"row"}
+                        wrap={"wrap"} // Memastikan elemen di Stack dapat membungkus
                     >
                         <Text
                             fontSize={"1.2rem"}
-                            px={200}
                             textAlign={"center"}
                             fontWeight={"medium"}
+                            maxWidth={[
+                                "200px",
+                                "400px",
+                                "600px",
+                                "1000px",
+                                "1200px",
+                            ]}
                         >
                             Our kebab location that is constantly moving or{" "}
                             <Box as="span" color={"red"}>
@@ -83,8 +128,8 @@ const Location = () => {
                     <Box
                         borderRadius={"3xl"}
                         overflow="hidden"
-                        width="1400px"
-                        height="400px"
+                        width={["200px", "400px", "600px", "1000px", "1200px"]}
+                        height={["200px", "200px", "200px", "300px", "300px"]}
                         shadow={"lg"}
                     >
                         <iframe
@@ -100,31 +145,62 @@ const Location = () => {
                 {/* GOOGLE MAPS EMBED END */}
 
                 {/* LOCATION DETAIL START */}
-                <Stack
-                    bgColor={"white"}
-                    h={"full"}
-                    w={"1400px"}
-                    direction={"row"}
-                    // gap={2}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    borderRadius={"2xl"}
-                    pr={5}
-                >
-                    <Stack p={4}>
-                        <img src="images/locDetail.svg" alt="" />
+                <Show above="md">
+                    <Stack
+                        bgColor={"white"}
+                        h={"full"}
+                        width={["200px", "400px", "600px", "1000px", "1200px"]}
+                        direction={"row"}
+                        borderRadius={"3xl"}
+                    >
+                        <Stack
+                            p={4}
+                            // alignItems={"center"}
+                            justifyContent={"center"}
+                        >
+                            <img src="images/locDetail.svg" alt="" />
+                        </Stack>
+                        <Stack py={5} w={"50%"}>
+                            <Text fontWeight={"bold"} fontSize={"1.2rem"}>
+                                Location Detail
+                            </Text>
+                            <Text>
+                                This will explain the location details but this
+                                can be edited. The text will be quite long
+                                because it tells you the way and where to go.
+                            </Text>
+                        </Stack>
                     </Stack>
-                    <Stack>
-                        <Text fontWeight={"bold"} fontSize={"1.2rem"}>
-                            Location Detail
-                        </Text>
-                        <Text>
-                            This will explain the location details but this can
-                            be edited. The text will be quite long because it
-                            tells you the way and where to go.
-                        </Text>
+                </Show>
+
+                <Hide above="md">
+                    <Stack
+                        bgColor={"white"}
+                        h={"full"}
+                        width={["200px", "400px", "600px", "1000px", "1200px"]}
+                        direction={"column"}
+                        borderRadius={"3xl"}
+                        pb={6}
+                    >
+                        <Stack
+                            p={4}
+                            alignItems={"center"}
+                            justifyContent={"center"}
+                        >
+                            <img src="images/locDetail.svg" alt="" />
+                        </Stack>
+                        <Stack pl={4} w={"95%"}>
+                            <Text fontWeight={"bold"} fontSize={"1.2rem"}>
+                                Location Detail
+                            </Text>
+                            <Text>
+                                This will explain the location details but this
+                                can be edited. The text will be quite long
+                                because it tells you the way and where to go.
+                            </Text>
+                        </Stack>
                     </Stack>
-                </Stack>
+                </Hide>
                 {/* LOCATION DETAIL END */}
             </Stack>
         </Stack>
