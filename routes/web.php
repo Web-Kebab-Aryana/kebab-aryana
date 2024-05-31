@@ -11,6 +11,9 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\StatisticController;
 
+use App\Models\Content;
+use App\Models\Menu;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,20 +26,12 @@ use App\Http\Controllers\StatisticController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/', function () {
     return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+
+        'data' => [
+            'content' => Content::find(1),
+            'menus' => Menu::all()
+        ]
     ]);
 });
 
@@ -89,4 +84,3 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-

@@ -1,12 +1,17 @@
-import { Box, Heading, Stack, Image, Text, Button } from "@chakra-ui/react";
-import React from "react";
+import { Heading, Stack, Image, Text, Button, Link } from "@chakra-ui/react";
+import { FaWhatsapp } from "react-icons/fa6";
 
-const OurReview = () => {
+type Review = {
+    phoneNumber: string;
+};
+
+const OurReview = ({ phoneNumber }: Review) => {
     return (
         <Stack
             bgGradient="linear(to-b, #FDD03975, #FFFFFF)"
             mb={10}
             // alignItems={"center"}
+            id="review"
         >
             <Stack align={"center"} justify={"center"} my={10}>
                 <Heading color={"#E7464E"}>Our Reviews</Heading>
@@ -168,6 +173,27 @@ const OurReview = () => {
                         ></Image>
                     </Stack>
                 </Stack>
+            </Stack>
+            <Stack
+                direction={"row"}
+                mx={["3rem", "7rem", "", "", "8rem"]}
+                py={"2rem"}
+                align={"center"}
+            >
+                <Text fontSize={"1.5rem"}>Feel free to </Text>
+                <Button
+                    as={Link}
+                    href={`https://wa.me/${phoneNumber}`}
+                    target="_blank"
+                    leftIcon={<FaWhatsapp />}
+                    bgColor={"#FDD039"}
+                    _hover={{
+                        bgColor: "#D8B235",
+                    }}
+                    rounded={"full"}
+                >
+                    Contact Us
+                </Button>
             </Stack>
         </Stack>
     );

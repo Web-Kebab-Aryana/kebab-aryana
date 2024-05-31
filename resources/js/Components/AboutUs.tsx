@@ -1,9 +1,13 @@
 import { Hide, Image, Show, Stack, Text } from "@chakra-ui/react";
 
-export default function AboutUs() {
+type AboutUsProps = {
+    aboutus: string;
+};
+
+export default function AboutUs({ aboutus }: AboutUsProps) {
     return (
         <>
-            <Stack w={"100vw"}>
+            <Stack w={"100vw"} id="about-us">
                 <Stack padding={["1.4rem", "", "", "4rem"]}>
                     {/* About Owner */}
                     <Stack
@@ -79,7 +83,7 @@ export default function AboutUs() {
                                         "1.9rem",
                                     ]}
                                 >
-                                    I sell The Best Kebab in Medang.
+                                    {aboutus}
                                 </Text>
                             </Stack>
                         </Stack>

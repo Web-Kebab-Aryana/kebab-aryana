@@ -14,12 +14,18 @@ import {
     Hide,
 } from "@chakra-ui/react";
 
-const Location = () => {
+type Location = {
+    location: string;
+    coordinate: string;
+};
+
+const Location = ({ location, coordinate }: Location) => {
     return (
         <Stack
             bgGradient="linear(to-b, #FFFFFF, #FDD03975)"
             minH={"100vh"}
             minW={"100vw"}
+            id="location"
         >
             <Stack
                 mt={10}
@@ -133,7 +139,7 @@ const Location = () => {
                         shadow={"lg"}
                     >
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3965.9985603818!2d106.609139!3d-6.263918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMTUnNTAuMSJTIDEwNsKwMzYnMzIuOSJF!5e0!3m2!1sen!2sid!4v1716876638808!5m2!1sen!2sid"
+                            src={coordinate}
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}
@@ -164,11 +170,7 @@ const Location = () => {
                             <Text fontWeight={"bold"} fontSize={"1.2rem"}>
                                 Location Detail
                             </Text>
-                            <Text>
-                                This will explain the location details but this
-                                can be edited. The text will be quite long
-                                because it tells you the way and where to go.
-                            </Text>
+                            <Text>{location}</Text>
                         </Stack>
                     </Stack>
                 </Show>
