@@ -34,6 +34,18 @@ export default function DivideStats() {
                     </Text>
                     <Text fontSize={"3xl"}>Orders/month</Text>
                 </Stack>
+                <Divider
+                    orientation="vertical"
+                    border={"solid 3px"}
+                    rounded={"3xl"}
+                    h={"11rem"}
+                />
+                <Stack>
+                    <Text fontWeight={"bold"} fontSize={"6xl"}>
+                        90+
+                    </Text>
+                    <Text fontSize={"3xl"}>Receipts we have</Text>
+                </Stack>
             </Stack>
         </>
     );
