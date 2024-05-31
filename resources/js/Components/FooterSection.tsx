@@ -3,7 +3,12 @@ import { Image, Link, Show, Stack, Text } from "@chakra-ui/react";
 export default function FooterSection() {
     return (
         <>
-            <Stack backgroundColor={"white"} overflow={"hidden"} w={"100vw"}>
+            <Stack
+                backgroundColor={"white"}
+                overflow={"hidden"}
+                w={"100vw"}
+                mt={"6rem"}
+            >
                 <Stack
                     bgGradient={
                         "linear-gradient(to bottom, rgba(255,244,224,1) 0%, rgba(255,233,192,1) 100%);"
@@ -39,13 +44,7 @@ export default function FooterSection() {
                             <Stack
                                 color={"#B22B39"}
                                 direction={"row"}
-                                fontSize={[
-                                    "1.1rem",
-                                    "1.6rem",
-                                    "1rem",
-                                    "1.1rem",
-                                    "1.8rem",
-                                ]}
+                                fontSize={"1.25rem"}
                                 gap={["0.5rem"]}
                                 mt={["-1.4rem", "-2.4rem", "-9%"]}
                                 ml={["", "", "2%"]}
@@ -55,13 +54,7 @@ export default function FooterSection() {
                             </Stack>
                             <Show above="md">
                                 <Stack
-                                    fontSize={[
-                                        "1.4rem",
-                                        "2.5rem",
-                                        "1rem",
-                                        "1rem",
-                                        "1.4rem",
-                                    ]}
+                                    fontSize={"1rem"}
                                     ml={["", "", "2%"]}
                                     mt={["", "", "5%"]}
                                 >
@@ -75,13 +68,7 @@ export default function FooterSection() {
                         {/* BAGIAN KEDUA */}
                         <Stack
                             gap={["1rem", "", "0.5rem"]}
-                            fontSize={[
-                                "1.2rem",
-                                "2rem",
-                                "0.9rem",
-                                "1.2rem",
-                                "1.6rem",
-                            ]}
+                            fontSize={"1.2rem"}
                             w={["100%", "", "60%"]}
                             mt={["", "", "6%", "", "4%"]}
                         >
@@ -98,10 +85,11 @@ export default function FooterSection() {
                                 opacity={"0.7"}
                                 gap={"0"}
                             >
-                                <Link>Home</Link>
-                                <Link>About Us</Link>
-                                <Link>Location</Link>
-                                <Link>Menu</Link>
+                                <Link href="/">Home</Link>
+                                <Link href="/#about-us">About Us</Link>
+                                <Link href="/#location">Location</Link>
+                                <Link href="/#menu">Menu</Link>
+                                <Link href="/login">Admin</Link>
                             </Stack>
                         </Stack>
                         {/* BAGIAN KEDUA */}

@@ -11,6 +11,7 @@ export default function HeroSection() {
                 alignItems={"center"}
                 position={"relative"}
                 w={"100vw"}
+                align={"center"}
             >
                 {/* BAGIAN ATAS */}
                 <Stack
@@ -36,9 +37,14 @@ export default function HeroSection() {
                             gap={"3.5rem"}
                             fontSize={["", "", "", "", "1.2rem"]}
                         >
-                            <Link>About Us</Link>
-                            <Link>Location</Link>
-                            <Link>Reviews</Link>
+                            <Link href="/#about-us" scrollBehavior={"smooth"}>
+                                About Us
+                            </Link>
+                            <Link href="/#location" scrollBehavior={"smooth"}>
+                                Location
+                            </Link>
+                            <Link href="/#review">Reviews</Link>
+                            <Link href="/#menu">Menu</Link>
                         </Stack>
                     </Show>
                 </Stack>
@@ -52,6 +58,8 @@ export default function HeroSection() {
                     zIndex={"2"}
                     direction={["column", "column", "row"]}
                     pt={["", "", "3%", "", "8%"]}
+                    justify={"space-between"}
+                    align={"center"}
                 >
                     {/* BAGIAN TENGAH PERTAMA */}
                     <Stack
@@ -115,23 +123,13 @@ export default function HeroSection() {
                     <Stack
                         gap={"0"}
                         color={"#AB2937"}
-                        w={"fit-content"}
+                        w={["18rem", "20rem", "18rem", "18rem", "23rem"]}
                         fontWeight={"900"}
-                        pl={["25%", "25%", "0%", "30%", "28%"]}
-                        pr={["", "", "8%", "0%"]}
+                        p={"2rem"}
                     >
                         <Stack gap={"0"}>
-                            <Text
-                                mb={["-6px", "-14px"]}
-                                fontSize={[
-                                    "1.6rem",
-                                    "2.3rem",
-                                    "1.4rem",
-                                    "1.8rem",
-                                    "2.8rem",
-                                ]}
-                            >
-                                What’s inside
+                            <Text mb={["-6px", "-14px"]} fontSize={"2rem"}>
+                                Whats inside
                             </Text>
                         </Stack>
                         <Stack gap={"0"}>
@@ -151,16 +149,11 @@ export default function HeroSection() {
                         <Stack
                             gap={["0.7rem", "", "", "", "1.4rem"]}
                             mt={["0.6rem"]}
+                            p={"1rem"}
                         >
                             <Stack
                                 backgroundColor={"#FFFFFF"}
-                                w={[
-                                    "9.4rem",
-                                    "13.5rem",
-                                    "8.5rem",
-                                    "10.4rem",
-                                    "16rem",
-                                ]}
+                                w={["full", "full", "full", "full", "full"]}
                                 h={[
                                     "2rem",
                                     "2.5rem",
@@ -224,13 +217,7 @@ export default function HeroSection() {
                             </Stack>
                             <Stack
                                 backgroundColor={"#FFFFFF"}
-                                w={[
-                                    "9.4rem",
-                                    "13.5rem",
-                                    "8.5rem",
-                                    "10.4rem",
-                                    "16rem",
-                                ]}
+                                w={["full", "full", "full", "full", "full"]}
                                 h={[
                                     "2rem",
                                     "2.5rem",
@@ -294,13 +281,7 @@ export default function HeroSection() {
                             </Stack>
                             <Stack
                                 backgroundColor={"#FFFFFF"}
-                                w={[
-                                    "9.4rem",
-                                    "13.5rem",
-                                    "8.5rem",
-                                    "10.4rem",
-                                    "16rem",
-                                ]}
+                                w={["full", "full", "full", "full", "full"]}
                                 h={[
                                     "2rem",
                                     "2.5rem",
@@ -364,13 +345,7 @@ export default function HeroSection() {
                             </Stack>
                             <Stack
                                 backgroundColor={"#FFFFFF"}
-                                w={[
-                                    "9.4rem",
-                                    "13.5rem",
-                                    "8.5rem",
-                                    "10.4rem",
-                                    "16rem",
-                                ]}
+                                w={["full", "full", "full", "full", "full"]}
                                 h={[
                                     "2rem",
                                     "2.5rem",
